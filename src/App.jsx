@@ -8,24 +8,31 @@ import AdminNav from "./Components/Admin/AdminNav";
 import UserRoutes from "./Routes/UserRoutes";
 import AdminRoutes from "./Routes/AdminRoutes";
 import UserFooter from "./Components/Users/UserFooter";
+import ClubAdminNav from "./Components/ClubAdmin/ClubAdminNav";
+import ClubRoutes from "./Routes/ClubRoutes";
 
 export default function App() {
-  const [HomeNav, setHomeNav] = useState(true);
+  const [Navi, setNavi] = useState(true);
   useEffect(() => {
-    if (location.pathname.search("admin") != -1) {
-      setHomeNav(false);
-    } else {
-      setHomeNav(true);
+    if(location.pathname.search("myclub") != -1){
+      setNavi("club")
+    }
+    else if (location.pathname.search("admin") != -1) {
+      setNavi("admin");
+    }
+    else {
+      setNavi("home");
     }
   }, [location]);
   return (
     <>
-      {HomeNav ? <Nav /> : <AdminNav />}
+      {Navi == "home" ? <Nav /> : Navi == "club"?<ClubAdminNav/>:<AdminNav/>}
       <Routes>
         {UserRoutes()}
+        {ClubRoutes()}
         {AdminRoutes()}
       </Routes>
-      <UserFooter />
+      {/* <UserFooter /> */}
     </>
   );
 }

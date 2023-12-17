@@ -2,52 +2,57 @@ import { Dropdown, Navbar } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-export default function AdminNav() {
+
+export default function ClubAdminNav() {
   const [shownav, setShownav] = useState(true);
   const location = useLocation();
-  const [cookie, setCookie] = useCookies(["AAUAT"]);
-  const navigate = useNavigate()
+  const [cookie, setCookie] = useCookies(["CAAUAT"]);
   const [Name, setName] = useState(["", ""]);
   const [email, setEmail] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  
+  const navigate = useNavigate()
+
   const check = async () => {
-    const getUser = await fetch("http://localhost:5000/admin/protected", {
+    const getUser = await fetch("http://localhost:5000/myclub/protected", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       mode: "cors",
-      body: JSON.stringify({ token: cookie.AAUAT }),
+      body: JSON.stringify({ token: cookie.CAUAT }),
     });
-    const { msg, name, email } = await getUser.json();
-
+    const {msg,founder,email} = await getUser.json();
+    // name: findbyCid.name,
+    // id: findbyCid._id,
+    // email: findbyCid.email,
+    // founder:findbyCid.founder,
+    // about:findbyCid.about,
+    // statement:findbyCid.statement,
+    // cid: findbyCid.cid,
     if (msg == "Access granted") {
-      setName([name.slice(0, 2), name]);
+      setName([founder.slice(0, 2), founder]);
       setEmail(email);
     }else{
-      navigate('/admin/login')
+      navigate('/myclub/login')
     }
   };
   const signOut = async () => {
-    const logout = setCookie("AAUAT", null);
+    const logout = setCookie("CAAUAT", null);
     navigate("/admin/login")
   };
   const toggleNav = () => {
     setIsOpen(!isOpen);
   };
   useEffect(() => {
-    if(location.pathname.search("admin") !=-1){
-      check();
-    }
+    check()
     if (
-      location.pathname == "/admin/signup" ||
-      location.pathname == "/admin/login"
+      location.pathname == "/myclub/login"
     ) {
       setShownav(false);
     } else {
       setShownav(true);
     }
+
   }, [location.pathname]);
   if (shownav) {
     return (
@@ -83,7 +88,7 @@ export default function AdminNav() {
               )}
             </button>
             <h2 className="text-white text-center text-xl">
-              Placement App Admin
+              Placement App Club Admin
             </h2>
           </div>
           <div className="mx-4">
@@ -111,7 +116,7 @@ export default function AdminNav() {
               My Profile
               </Dropdown.Item>
               <Dropdown.Item className="text-white hover:text-black">
-                My Cubs
+                My Club
               </Dropdown.Item>
               <Dropdown.Item
                 className="text-white hover:text-black"
@@ -132,24 +137,27 @@ export default function AdminNav() {
               <h2 className="text-white font-bold pl-2 pt-2 text-2xl">
                   {Name[1]}
               </h2>
-              <h3 className="bg-white w-max ml-2 text-xs px-2">Admin</h3>
+              <h3 className="bg-white w-max ml-2 text-xs px-2">Club Admin</h3>
 
             </div>
             <ul className="mt-3">
               <li className="text-white p-2 rounded">
-                <Link to="/admin" onClick={e=>{setIsOpen(false)}}>Dashboard</Link>
+                <Link to="/myclub" onClick={e=>{setIsOpen(false)}}>Dashboard</Link>
               </li>
               <li className="text-white p-2 rounded">
-                <Link to="/admin/clubs" onClick={e=>{setIsOpen(false)}}>Clubs</Link>
+                <Link to="/myclub" onClick={e=>{setIsOpen(false)}}>Members</Link>
               </li>
               <li className="text-white p-2 rounded">
-                <Link to="/admin/carousel" onClick={e=>{setIsOpen(false)}}>Approve Carousel</Link>
+                <Link to="/myclub" onClick={e=>{setIsOpen(false)}}>Add Trending</Link>
               </li>
               <li className="text-white p-2 rounded">
-                <Link to="/admin/news" onClick={e=>{setIsOpen(false)}}>News</Link>
+                <Link to="/myclub" onClick={e=>{setIsOpen(false)}}>Add News</Link>
               </li>
               <li className="text-white p-2 rounded">
-                <Link to="/events" onClick={e=>{setIsOpen(false)}}>Events</Link>
+                <Link to="/myclub/addcarousel" onClick={e=>{setIsOpen(false)}}>Add Carousel</Link>
+              </li>
+              <li className="text-white p-2 rounded">
+                <Link to="/events" onClick={e=>{setIsOpen(false)}}>Club Events</Link>
               </li>
               <li className="text-white p-2 rounded">
                 <Link to="/settigs" onClick={e=>{setIsOpen(false)}}>Settings</Link>

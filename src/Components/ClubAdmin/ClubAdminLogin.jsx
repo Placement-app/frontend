@@ -3,43 +3,36 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { HiInformationCircle } from "react-icons/hi";
 import { useCookies } from "react-cookie";
-export default function AdminLogin() {
-  const [email, setEmail] = useState("");
+export default function ClubAdminLogin() {
+  const [cid, setCid] = useState("");
   const [password, setPassword] = useState("");
   const [alert, setAlert] = useState([false, ""]);
-  const [cookie, setCookie] = useCookies(["AAUAT"]);
+  const [cookie, setCookie] = useCookies(["CAAUAT"]);
 
   const navigate = useNavigate();
-  document.title = "Signup | Placement App";
+  document.title = "Login | Club Admin";
 
   const loginBtn = async (e) => {
     e.preventDefault();
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
-    if (email == "" || password == "") {
+    if (cid == "" || password == "") {
       setAlert([true, "Please fill all the fields"]);
     } else {
-      if (regex.test(password)) {
-        const send = await fetch("http://localhost:5000/admin/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          mode: "cors",
-          body: JSON.stringify({ email, password }),
-        });
-        const { msg } = await send.json();
-        console.log(msg);
-        if (msg.token) {
-          setCookie("AAUAT", msg.token);
-          navigate("/admin");
-        } else {
-          setAlert([true, msg]);
-        }
+      const send = await fetch("http://localhost:5000/myclub/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode: "cors",
+        body: JSON.stringify({ id:cid, password }),
+      });
+      const { msg,token } = await send.json();
+      console.log(token);
+      if (msg=="Access granted") {
+        setCookie("CAUAT", token);
+        navigate("/myclub");
+
       } else {
-        setAlert([
-          true,
-          "Your password must contain \n2 uppercase,2 lowercase and 2 numbers ",
-        ]);
+        setAlert([true, msg]);
       }
     }
   };
@@ -67,7 +60,7 @@ export default function AdminLogin() {
           </div>
           <div className=" container flex max-w-sm  mx-4 flex-col gap-4 bg-black rounded-lg p-3 pl-5 pr-5">
             <h2 className="text-white text-center font-bold text-2xl mt-4">
-              Master Login
+              Club Admin Login
             </h2>
             <h2 className="text-gray-500 text-center text-sm mx-4">
               Welcome Back user!, Login in placement app to get latest trenings
@@ -76,19 +69,19 @@ export default function AdminLogin() {
             <div>
               <div className="mb-2 block">
                 <Label
-                  htmlFor="email1"
-                  value="Your email"
+                  htmlFor="cid"
+                  value="Your club id"
                   className="text-white"
                 />
               </div>
               <TextInput
-                id="email1"
-                placeholder="Eg. Joe@flowbite.com"
+                id="cid"
+                placeholder="Club Id"
                 required
                 className="text-white bg-black"
                 type="email"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
+                onChange={(e) => setCid(e.target.value)}
+                value={cid}
               />
             </div>
             <div>
@@ -111,17 +104,6 @@ export default function AdminLogin() {
             <div className="flex items-center gap-2">
               <Checkbox id="agree" required />
               <h2 className="text-gray-500 text-center text-xs">Remember me</h2>
-            </div>
-            <div>
-              <h2 className="text-gray-500 text-xs">
-                If Don't have account{" "}
-                <Link
-                  to="/signup"
-                  className="text-white underline cursor-pointer"
-                >
-                  Create New One
-                </Link>
-              </h2>
             </div>
             <button
               type="submit"
