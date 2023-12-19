@@ -1,26 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs';
 import { RxDotFilled } from 'react-icons/rx';
 export default function HomeCarousel() {
+  const [slides, setslides] = useState([{ img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYdutQfiy3GHw1bWOObaq6u-nIivB6Uzz1C6Fw43FvKhQ8NAMqiKst4_aRrJi6ZZAUQq8&usqp=CAU" }])
 
-  const slides = [
-    {
-      url: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2620&q=80',
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80',
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1661961112951-f2bfd1f253ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2672&q=80',
-    },
-
-    {
-      url: 'https://images.unsplash.com/photo-1512756290469-ec264b7fbf87?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2253&q=80',
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2671&q=80',
-    },
-  ];
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const prevSlide = () => {
@@ -28,39 +11,61 @@ export default function HomeCarousel() {
     const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
     setCurrentIndex(newIndex);
   };
-
   const nextSlide = () => {
     const isLastSlide = currentIndex === slides.length - 1;
     const newIndex = isLastSlide ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
   };
-
   const goToSlide = (slideIndex) => {
     setCurrentIndex(slideIndex);
   };
-  return(   <div className='h-[480px] pt-10'>
-  <div
-    style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
-    className='w-full h-full bg-center bg-cover duration-500'
-  ></div>
-  <div className='group-hover:block absolute top-[50%] mx-1 -my-10  -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
-    <BsChevronCompactLeft onClick={prevSlide} size={30} className="z-1"/>
+
+  const getCarousel = async () => {
+    const req = await fetch('http://localhost:5000/user/carousel', {
+      method: "GET",
+      mode: "cors",
+    })
+    const { data } = await req.json()
+    if(data.length!=0){
+      data.map((e,i)=>{
+        if(i!=0){
+          setslides([...slides,{img:`http://localhost:5000/myclub/carousel/${e.img}`,cid:e.cid}])
+        }else{
+          setslides([{img:`http://localhost:5000/myclub/carousel/${e.img}`,cid:e.cid}])
+        }
+    })
+    }else{
+      
+    }
+  }
+  useEffect(() => {
+    getCarousel()
+  }, [])
+
+
+  return (<div className='h-[480px] pt-10'>
+    <div
+      style={{ backgroundImage: `url(${slides[currentIndex].img})` }}
+      className='w-full h-full bg-center bg-cover duration-500'
+    ></div>
+    <div className='group-hover:block absolute top-[50%] mx-1 -my-10  -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
+      <BsChevronCompactLeft onClick={prevSlide} size={30} className="z-1" />
+    </div>
+    <div className='group-hover:block absolute top-[50%]  mx-1 -my-10 -translate-x-0 translate-y-[-50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
+      <BsChevronCompactRight onClick={nextSlide} size={30} className="z-1" />
+    </div>
+    <div className='flex top-4 justify-center py-2'>
+      {slides.map((slide, slideIndex) => (
+        <div
+          key={slideIndex}
+          onClick={() => goToSlide(slideIndex)}
+          className='text-2xl cursor-pointer'
+        >
+          <RxDotFilled />
+        </div>
+      ))}
+    </div>
   </div>
-  <div className='group-hover:block absolute top-[50%]  mx-1 -my-10 -translate-x-0 translate-y-[-50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
-    <BsChevronCompactRight onClick={nextSlide} size={30} className="z-1"/>
-  </div>
-  <div className='flex top-4 justify-center py-2'>
-    {slides.map((slide, slideIndex) => (
-      <div
-        key={slideIndex}
-        onClick={() => goToSlide(slideIndex)}
-        className='text-2xl cursor-pointer'
-      >
-        <RxDotFilled />
-      </div>
-    ))}
-  </div>
-</div>
   )
 }
 

@@ -1,11 +1,14 @@
-import { Button, Modal } from "flowbite-react";
+import { Alert, Button, Modal } from "flowbite-react";
 import React, { useEffect, useState } from "react";
+import { CiCircleCheck } from "react-icons/ci";
+import { HiInformationCircle } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
 export default function ApproveCarousel() {
   const [Data, setData] = useState([]);
   const [openViewDocs, setopenViewDocs] = useState([false, { name: "", logo: "", founder: "", carousel: { img: "", content: "", cid: "" } }])
-  const [Warning, setWarning] = useState([false,""])
+  const [Warning, setWarning] = useState([false, ""])
+  const [Success, setSuccess] = useState([false, ""])
   const load = async () => {
     const send = await fetch("http://localhost:5000/admin/carousel_approval", {
       method: "GET",
@@ -13,31 +16,45 @@ export default function ApproveCarousel() {
     });
     const { msg } = await send.json();
     setData(msg.carousel);
+    console.log(msg.carousel);
   };
   const accept = async (d) => {
     const send = await fetch("http://localhost:5000/admin/approve_carousel", {
       method: "POST",
       mode: "cors",
-      headers:{
-        'Content-Type':'application/json'
+      headers: {
+        'Content-Type': 'application/json'
       },
-      body:JSON.stringify({cid:d.cid,img:d.data.img,content:d.data.content})
+      body: JSON.stringify({ cid: d.cid, img: d.data.img, content: d.data.content })
     });
     const res = await send.json();
-    if(res.approved==false){
-      setWarning([false,res.msg])
-    }else{
-        
-    }
+    if (res.approved == false) {
+      setWarning([true, res.msg])
+      setSuccess([false, ""])      
+    } else {
+      setSuccess([true, res.msg])
+      setWarning([false, ""])
+      load()
+      }
   };
-  const decline = async () => {
-    const send = await fetch("http://localhost:5000/admin/clubs_approval", {
-      method: "GET",
+  const decline = async (cid,img,content) => {
+    const send = await fetch("http://localhost:5000/admin/decline_carousel", {
+      method: "POST",
       mode: "cors",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ cid,img,content })
     });
-    const { msg } = await send.json();
-    console.log(msg);
-    setData(msg);
+    const res = await send.json();
+    if (res.denied) {
+      setSuccess([true, res.msg])
+      setWarning([false, ""])
+      load()
+    } else {
+      setWarning([true, res.msg])
+      setSuccess([false, ""])
+    }
   };
   useEffect(() => {
     load();
@@ -45,6 +62,23 @@ export default function ApproveCarousel() {
 
   return (
     <div>
+      <div className="mt-5">
+        {Warning[0] ? <Alert color="failure" icon={HiInformationCircle} className="mx-4">
+          <span>
+            <p>
+              <span className="font-medium">{Warning[1]}</span>
+            </p>
+          </span>
+        </Alert> : ""}
+        {Success[0] ? <Alert color="success" icon={CiCircleCheck} className="mx-4">
+          <span>
+            <p>
+              <span className="font-medium">{Success[1]}</span>
+            </p>
+          </span>
+        </Alert> : ""}
+      </div>
+
       <Modal show={openViewDocs[0]} onClose={() => setopenViewDocs([false, openViewDocs])}>
         <Modal.Header>
           <div>
@@ -73,11 +107,10 @@ export default function ApproveCarousel() {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button className="bg-black" onClick={() => {setopenViewDocs([false, openViewDocs[1]]);accept(openViewDocs[1])}}>Approve</Button>
-          <Button color="gray" onClick={() => setopenViewDocs([false, openViewDocs[1]])}>
+          <Button className="bg-black" onClick={() => { setopenViewDocs([false, openViewDocs[1]]); accept(openViewDocs[1]) }}>Approve</Button>
+          <Button color="gray" onClick={() => { setopenViewDocs([false, openViewDocs[1]]); decline(openViewDocs[1].cid,openViewDocs[1].data.img,openViewDocs[1].data.content) }}>
             Decline
           </Button>
-
         </Modal.Footer>
       </Modal>
       <div className="p-4">
@@ -127,7 +160,7 @@ export default function ApproveCarousel() {
                       {e.founder}
                     </td>
                     <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-indigo-600 hover:text-indigo-900">
-                      <button onClick={ele => {setopenViewDocs([true, e])}}>View Docs</button>
+                      <button onClick={ele => { setopenViewDocs([true, e]) }}>View Docs</button>
 
                     </td>
                     <td className="px-6 py-4 text-sm leading-5 text-indigo-600">

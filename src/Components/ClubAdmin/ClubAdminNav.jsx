@@ -19,15 +19,15 @@ export default function ClubAdminNav() {
         "Content-Type": "application/json",
       },
       mode: "cors",
-      body: JSON.stringify({ token: cookie.CAUAT }),
+      body: JSON.stringify({ token: cookie.CAAUAT }),
     });
     const {msg,founder,email} = await getUser.json();
-  
+    console.log(msg);
     if (msg == "Access granted") {
       setName([founder.slice(0, 2), founder]);
       setEmail(email);
     }else{
-      navigate('/myclub/login')
+      // navigate('/myclub/login')
     }
   };
   const signOut = async () => {

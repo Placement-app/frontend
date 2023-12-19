@@ -85,10 +85,13 @@ export default function Nav() {
               All Clubs
             </Link>
             <Link to="/" className="text-white border-0 mt-8 mb-4 text-center md:mt-0 md:mb-0">
-              About
+              News
             </Link>
             <Link to="/" className="text-white border-0 mt-8 mb-8 text-center md:mt-0 md:mb-0">
-              Pricing
+              Trendings
+            </Link>
+            <Link to="/" className="text-white border-0 mt-8 mb-4 text-center md:mt-0 md:mb-0">
+              About
             </Link>
           </Navbar.Collapse>
         ) : (

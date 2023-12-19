@@ -39,10 +39,10 @@ export default function ClubCards() {
     <div className="px-4 mt-12">
       <div className="container mx-auto ">
         <h1 className="text-2xl font-bold p-4">Trending Clubs</h1>
-        <div className="grid grid-cols-5">
+        <div className="grid grid-cols-2 md:grid-cols-5">
           {clubItems.map((e, i) => {
             return (
-              <div className="mx-2 my-4 flex flex-col items-center">
+              <div key={i} className="mx-2 my-4 flex flex-col items-center">
                     <img
                       className="mb-3 rounded-md h-20 "
                       src={e.logo}

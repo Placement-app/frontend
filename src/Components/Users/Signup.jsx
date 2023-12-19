@@ -73,7 +73,7 @@ export default function Signup() {
             <h2 className="text-white text-center font-bold text-2xl mt-4">
               Sign Up
             </h2>
-            <h2 className="text-gray-500 text-center text-sm mx-4">
+            <h2 className="text-gray-500 text-center text-sm mx-2">
               signup in placement app to get latest trenings of clubs and
               placements related news
             </h2>
@@ -131,7 +131,8 @@ export default function Signup() {
                 value={regno}
               />
             </div>
-            <div>
+            <div className="flex">
+            <div className="mr-2">
               <div className="mb-2 block">
                 <Label
                   htmlFor="password1"
@@ -164,6 +165,7 @@ export default function Signup() {
                 onChange={(e) => setCPassword(e.target.value)}
                 value={cpassword}
               />
+            </div>
             </div>
             <div className="flex items-center gap-2">
               <Checkbox id="agree" required />

@@ -26,9 +26,9 @@ export default function ClubAdminLogin() {
         body: JSON.stringify({ id:cid, password }),
       });
       const { msg,token } = await send.json();
-      console.log(token);
+      console.log(msg);
       if (msg=="Access granted") {
-        setCookie("CAUAT", token);
+        setCookie("CAAUAT", token);
         navigate("/myclub");
 
       } else {
@@ -36,6 +36,7 @@ export default function ClubAdminLogin() {
       }
     }
   };
+  
   return (
     <div style={{ backgroundColor: "#070707" }}>
       <div
