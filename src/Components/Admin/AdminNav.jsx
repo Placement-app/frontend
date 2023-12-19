@@ -1,7 +1,10 @@
-import { Dropdown, Navbar } from "flowbite-react";
+import { Dropdown } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import {  HiViewGrid } from 'react-icons/hi';
+import { FaThumbsUp } from "react-icons/fa";
+
 export default function AdminNav() {
   const [shownav, setShownav] = useState(true);
   const location = useLocation();
@@ -10,7 +13,7 @@ export default function AdminNav() {
   const [Name, setName] = useState(["", ""]);
   const [email, setEmail] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const check = async () => {
     const getUser = await fetch("http://localhost:5000/admin/protected", {
       method: "POST",
@@ -25,7 +28,7 @@ export default function AdminNav() {
     if (msg == "Access granted") {
       setName([name.slice(0, 2), name]);
       setEmail(email);
-    }else{
+    } else {
       navigate('/admin/login')
     }
   };
@@ -37,7 +40,7 @@ export default function AdminNav() {
     setIsOpen(!isOpen);
   };
   useEffect(() => {
-    if(location.pathname.search("admin") !=-1){
+    if (location.pathname.search("admin") != -1) {
       check();
     }
     if (
@@ -92,7 +95,6 @@ export default function AdminNav() {
               inline
               className="bg-black border-2 m-2 mx-4"
               label={
-                // <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
                 <div className="w-10 h-10 mx-1 bg-white rounded-lg flex justify-center items-center">
                   <h1 className="text-md font-bold">{Name[0].toUpperCase()}</h1>
                 </div>
@@ -108,7 +110,7 @@ export default function AdminNav() {
                 Dashboard
               </Dropdown.Item>
               <Dropdown.Item className="text-white hover:text-black">
-              My Profile
+                My Profile
               </Dropdown.Item>
               <Dropdown.Item className="text-white hover:text-black">
                 My Cubs
@@ -123,39 +125,42 @@ export default function AdminNav() {
           </div>
         </div>
         <div
-          className={`absolute z-10 bg-black ${
-            isOpen ? "-left-0" : "-left-64"
-          }`}
+          className={`absolute z-10 bg-black ${isOpen ? "-left-0" : "-left-64"
+            }`}
         >
           <div className={"min-h-screen w-64 p-4"}>
             <div>
               <h2 className="text-white font-bold pl-2 pt-2 text-2xl">
-                  {Name[1]}
+                {Name[1]}
               </h2>
               <h3 className="bg-white w-max ml-2 text-xs px-2">Admin</h3>
 
             </div>
             <ul className="mt-3">
               <li className="text-white p-2 rounded">
-                <Link to="/admin" onClick={e=>{setIsOpen(false)}}>Dashboard</Link>
+                <Link to="/admin" onClick={e => { setIsOpen(false) }}>Dashboard</Link>
               </li>
               <li className="text-white p-2 rounded">
-                <Link to="/admin/clubs" onClick={e=>{setIsOpen(false)}}>Clubs</Link>
+                <Link to="/admin/clubs" onClick={e => { setIsOpen(false) }}>Clubs</Link>
               </li>
               <li className="text-white p-2 rounded">
-                <Link to="/admin/carousel" onClick={e=>{setIsOpen(false)}}>Approve Carousel</Link>
+
+                <Dropdown label="Carousel" className="bg-black" inline>
+                  <Dropdown.Item className="text-white hover:text-black" icon={HiViewGrid}><div onClick={e => navigate("/admin/allcarousel")}>All Clubs Carousel</div></Dropdown.Item>
+                  <Dropdown.Item className="text-white hover:text-black" icon={FaThumbsUp}><div onClick={e => navigate("/admin/approvedcarousel")}>Approved Carousel</div></Dropdown.Item>
+                </Dropdown>
               </li>
               <li className="text-white p-2 rounded">
-                <Link to="/admin/news" onClick={e=>{setIsOpen(false)}}>News</Link>
+                <Link to="/admin/news" onClick={e => { setIsOpen(false) }}>News</Link>
               </li>
               <li className="text-white p-2 rounded">
-                <Link to="/events" onClick={e=>{setIsOpen(false)}}>Events</Link>
+                <Link to="/events" onClick={e => { setIsOpen(false) }}>Events</Link>
               </li>
               <li className="text-white p-2 rounded">
-                <Link to="/settigs" onClick={e=>{setIsOpen(false)}}>Settings</Link>
+                <Link to="/settigs" onClick={e => { setIsOpen(false) }}>Settings</Link>
               </li>
               <li className="text-white p-2 rounded">
-                <Link to="/users" onClick={e=>{setIsOpen(false)}}>Users</Link>
+                <Link to="/users" onClick={e => { setIsOpen(false) }}>Users</Link>
               </li>
               {/* Add more navigation items as needed */}
             </ul>

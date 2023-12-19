@@ -22,13 +22,7 @@ export default function ClubAdminNav() {
       body: JSON.stringify({ token: cookie.CAUAT }),
     });
     const {msg,founder,email} = await getUser.json();
-    // name: findbyCid.name,
-    // id: findbyCid._id,
-    // email: findbyCid.email,
-    // founder:findbyCid.founder,
-    // about:findbyCid.about,
-    // statement:findbyCid.statement,
-    // cid: findbyCid.cid,
+  
     if (msg == "Access granted") {
       setName([founder.slice(0, 2), founder]);
       setEmail(email);

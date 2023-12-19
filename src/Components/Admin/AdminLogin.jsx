@@ -44,18 +44,18 @@ export default function AdminLogin() {
     }
   };
   return (
-    <div style={{ backgroundColor: "#070707" }}>
+    <div style={{ backgroundColor: "#070707",width:"100%", height: "100vh"  }}>
       <div
         className="flex justify-center items-center"
-        style={{ height: "100vh" }}
-      >
+        style={{ height: "100vh"}}
+       >
         <form action="/">
-          <div className="flex justify-center item-center pt-5 pb-5 ">
+          <div  style={{position:"absolute",top:0,left:0,width:"100%"}}>
+            <div className="flex justify-center mx-5 mt-5">
             {alert[0] ? (
               <Alert
                 color="failure"
                 icon={HiInformationCircle}
-                className="mx-4"
               >
                 <span>
                   <p>
@@ -64,8 +64,10 @@ export default function AdminLogin() {
                 </span>
               </Alert>
             ) : null}
+            
+            </div>
           </div>
-          <div className=" container flex max-w-sm  mx-4 flex-col gap-4 bg-black rounded-lg p-3 pl-5 pr-5">
+          <div className="mt-12 container flex max-w-sm  mx-4 flex-col gap-4 bg-black rounded-lg p-3 pl-5 pr-5">
             <h2 className="text-white text-center font-bold text-2xl mt-4">
               Master Login
             </h2>
