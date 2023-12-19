@@ -15,7 +15,7 @@ export default function AdminNav() {
   const [isOpen, setIsOpen] = useState(false);
 
   const check = async () => {
-    const getUser = await fetch("http://localhost:5000/admin/protected", {
+    const getUser = await fetch("http://https://psa-server-placement-system-application.vercel.app/admin/protected", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -7,7 +7,7 @@ export default function ApprovedCarousel() {
   const [Warning, setWarning] = useState([false, ""])
   const [Success, setSuccess] = useState([false, ""])
   const getData = async () => {
-    const req = await fetch('http://localhost:5000/admin/approved_carousels', {
+    const req = await fetch('http://https://psa-server-placement-system-application.vercel.app/admin/approved_carousels', {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
@@ -18,7 +18,7 @@ export default function ApprovedCarousel() {
     setData(res)
   }
   const remove = async (cid) => {
-    const req = await fetch('http://localhost:5000/admin/remove_carousel', {
+    const req = await fetch('http://https://psa-server-placement-system-application.vercel.app/admin/remove_carousel', {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -76,7 +76,7 @@ export default function ApprovedCarousel() {
               Data.map((e, i) => {
                 return (
                   <div key={i} className='mx-2 mt-2'>
-                    <img width={"90%"} src={`http://localhost:5000/myclub/carousel/${e.img}`} alt="" />
+                    <img width={"90%"} src={`http://https://psa-server-placement-system-application.vercel.app/myclub/carousel/${e.img}`} alt="" />
                     <h2 className='text-sm mt-2'>Club Id</h2>
                     <h2 className='text-sm mb-2'>{e.cid}</h2>
                     <div className='flex'>

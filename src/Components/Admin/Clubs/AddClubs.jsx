@@ -18,7 +18,7 @@ export default function AddClubs() {
       setMainSuccess([false,""])
       setMainWarning([true, "Please fill all the fields!"])
     } else {
-      const send = await fetch("http://localhost:5000/admin/addclub", {
+      const send = await fetch("http://https://psa-server-placement-system-application.vercel.app/admin/addclub", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export default function AddClubs() {
   const uploadLogo = async (e) => {
     const formData = new FormData();
     formData.append('logo', e);
-    const send = await fetch("http://localhost:5000/admin/clublogo", {
+    const send = await fetch("http://https://psa-server-placement-system-application.vercel.app/admin/clublogo", {
       method: "POST",
       mode: "cors",
       body: formData,
@@ -67,7 +67,7 @@ export default function AddClubs() {
   const uploadVDocs = async (e) => {
     const formData = new FormData();
     formData.append('verification', e);
-    const send = await fetch("http://localhost:5000/admin/clubverificationdocs", {
+    const send = await fetch("http://https://psa-server-placement-system-application.vercel.app/admin/clubverificationdocs", {
       method: "POST",
       mode: "cors",
       body: formData,
