@@ -21,7 +21,7 @@ export default function HomeCarousel() {
   };
 
   const getCarousel = async () => {
-    const req = await fetch('http://https://psa-server-placement-system-application.vercel.app/user/carousel', {
+    const req = await fetch('https://psa-server-placement-system-application.vercel.app/user/carousel', {
       method: "GET",
       mode: "cors",
     })
@@ -29,9 +29,9 @@ export default function HomeCarousel() {
     if(data.length!=0){
       data.map((e,i)=>{
         if(i!=0){
-          setslides([...slides,{img:`http://https://psa-server-placement-system-application.vercel.app/myclub/carousel/${e.img}`,cid:e.cid}])
+          setslides([...slides,{img:`https://psa-server-placement-system-application.vercel.app/myclub/carousel/${e.img}`,cid:e.cid}])
         }else{
-          setslides([{img:`http://https://psa-server-placement-system-application.vercel.app/myclub/carousel/${e.img}`,cid:e.cid}])
+          setslides([{img:`https://psa-server-placement-system-application.vercel.app/myclub/carousel/${e.img}`,cid:e.cid}])
         }
     })
     }else{

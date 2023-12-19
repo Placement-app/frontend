@@ -13,7 +13,7 @@ export default function ClubAdminNav() {
   const navigate = useNavigate()
 
   const check = async () => {
-    const getUser = await fetch("http://https://psa-server-placement-system-application.vercel.app/myclub/protected", {
+    const getUser = await fetch("https://psa-server-placement-system-application.vercel.app/myclub/protected", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

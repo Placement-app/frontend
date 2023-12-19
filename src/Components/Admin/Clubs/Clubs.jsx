@@ -4,7 +4,7 @@ export default function Clubs() {
   document.title = "All Clubs | Placement App";
   const [clubs, setClubs] = useState([])
   const AllData = async () => {
-    const send = await fetch("http://https://psa-server-placement-system-application.vercel.app/admin/clubs", {
+    const send = await fetch("https://psa-server-placement-system-application.vercel.app/admin/clubs", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export default function Clubs() {
               width={300}
               className="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900"
             >
-              <img className="rounded" src={`http://https://psa-server-placement-system-application.vercel.app/admin/clublogo/${e.logo}`} height={"100px"} width={150} />
+              <img className="rounded" src={`https://psa-server-placement-system-application.vercel.app/admin/clublogo/${e.logo}`} height={"100px"} width={150} />
             </td>
             <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
               {e.cid}

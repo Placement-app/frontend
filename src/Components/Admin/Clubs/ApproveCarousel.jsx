@@ -10,7 +10,7 @@ export default function ApproveCarousel() {
   const [Warning, setWarning] = useState([false, ""])
   const [Success, setSuccess] = useState([false, ""])
   const load = async () => {
-    const send = await fetch("http://https://psa-server-placement-system-application.vercel.app/admin/carousel_approval", {
+    const send = await fetch("https://psa-server-placement-system-application.vercel.app/admin/carousel_approval", {
       method: "GET",
       mode: "cors",
     });
@@ -19,7 +19,7 @@ export default function ApproveCarousel() {
     console.log(msg.carousel);
   };
   const accept = async (d) => {
-    const send = await fetch("http://https://psa-server-placement-system-application.vercel.app/admin/approve_carousel", {
+    const send = await fetch("https://psa-server-placement-system-application.vercel.app/admin/approve_carousel", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -38,7 +38,7 @@ export default function ApproveCarousel() {
       }
   };
   const decline = async (cid,img,content) => {
-    const send = await fetch("http://https://psa-server-placement-system-application.vercel.app/admin/decline_carousel", {
+    const send = await fetch("https://psa-server-placement-system-application.vercel.app/admin/decline_carousel", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -95,7 +95,7 @@ export default function ApproveCarousel() {
             {
               openViewDocs[0] ? <div>
                 {
-                  openViewDocs[0] ? <img src={`http://https://psa-server-placement-system-application.vercel.app/myclub/carousel/${openViewDocs[1].data.img}`} width={"100%"} alt="" /> : ""
+                  openViewDocs[0] ? <img src={`https://psa-server-placement-system-application.vercel.app/myclub/carousel/${openViewDocs[1].data.img}`} width={"100%"} alt="" /> : ""
                 }
 
                 <p className="text-base leading-relaxed text-gray-800 text-justify mt-10">
@@ -148,7 +148,7 @@ export default function ApproveCarousel() {
                       width={300}
                       className="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900"
                     >
-                      <img className="rounded" src={`http://https://psa-server-placement-system-application.vercel.app/admin/clublogo/${e.logo}`} height={"100px"} width={150} />
+                      <img className="rounded" src={`https://psa-server-placement-system-application.vercel.app/admin/clublogo/${e.logo}`} height={"100px"} width={150} />
                     </td>
                     <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
                       {e.cid}

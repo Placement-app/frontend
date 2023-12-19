@@ -17,7 +17,7 @@ export default function ClubAdminLogin() {
     if (cid == "" || password == "") {
       setAlert([true, "Please fill all the fields"]);
     } else {
-      const send = await fetch("http://https://psa-server-placement-system-application.vercel.app/myclub/login", {
+      const send = await fetch("https://psa-server-placement-system-application.vercel.app/myclub/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

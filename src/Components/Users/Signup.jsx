@@ -24,7 +24,7 @@ export default function Signup() {
     } else {
       if (regex.test(password)) {
         if (password == cpassword) {
-          const send = await fetch("http://https://psa-server-placement-system-application.vercel.app/user/signup", {
+          const send = await fetch("https://psa-server-placement-system-application.vercel.app/user/signup", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
