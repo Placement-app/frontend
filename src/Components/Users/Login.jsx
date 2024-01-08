@@ -1,5 +1,5 @@
 import { Checkbox, Label, TextInput, Alert } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { HiInformationCircle } from "react-icons/hi";
 import { useCookies } from "react-cookie";
@@ -19,7 +19,7 @@ export default function Login() {
       setAlert([true, "Please fill all the fields"]);
     } else {
       if (regex.test(password)) {
-        const send = await fetch("https://psa-server-placement-system-application.vercel.app/user/login", {
+        const send = await fetch("https://psa-server.vercel.app/user/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -43,14 +43,15 @@ export default function Login() {
       }
     }
   };
+  
   return (
-    <div style={{ backgroundColor: "#070707" }}>
+    <div style={{ backgroundColor: "#070707",height:"130vh" }}>
       <div
         className="flex justify-center items-center"
         style={{ height: "100vh" }}
       >
         <form action="/">
-        <div className="flex justify-center item-center pt-5 pb-5">
+        <div className="flex justify-center  item-center pt-5 pb-5">
         {alert[0] ? (
           <Alert color="failure" icon={HiInformationCircle} className="mx-4">
             <span>
@@ -61,7 +62,7 @@ export default function Login() {
           </Alert>
         ) : null}
       </div>
-          <div className=" container flex max-w-sm  mx-4 flex-col gap-4 bg-black rounded-lg p-3 pl-5 pr-5">
+          <div className=" container flex max-w-sm flex-col gap-4 bg-black rounded-lg p-3 pl-5 pr-5">
             <h2 className="text-white text-center font-bold text-2xl mt-4">
               Login
             </h2>

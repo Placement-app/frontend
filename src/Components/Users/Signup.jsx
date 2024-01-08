@@ -2,7 +2,7 @@ import { Button, Checkbox, Label, TextInput, Alert } from "flowbite-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { HiInformationCircle } from "react-icons/hi";
-import {useCookies} from 'react-cookie'
+import { useCookies } from 'react-cookie'
 export default function Signup() {
   const [Name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -10,7 +10,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [cpassword, setCPassword] = useState("");
   const [alert, setAlert] = useState([false, ""]);
-  const [cookie,setCookie] = useCookies(['PAUAT'])
+  const [cookie, setCookie] = useCookies(['PAUAT'])
 
   const navigate = useNavigate();
   document.title = "Signup | Placement App";
@@ -24,7 +24,7 @@ export default function Signup() {
     } else {
       if (regex.test(password)) {
         if (password == cpassword) {
-          const send = await fetch("https://psa-server-placement-system-application.vercel.app/user/signup", {
+          const send = await fetch("https://psa-server.vercel.app/user/signup", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -35,7 +35,7 @@ export default function Signup() {
           const { msg } = await send.json();
           console.log(msg);
           if (msg.token) {
-            setCookie('PAUAT',msg.token)
+            setCookie('PAUAT', msg.token)
             navigate("/")
           } else {
             setAlert([true, "Something Went Wrong!"]);
@@ -55,7 +55,7 @@ export default function Signup() {
     }
   };
   return (
-    <div style={{ backgroundColor: "#070707" }}>
+    <div style={{ backgroundColor: "#070707",height:"130vh" }}>
       <div className="flex justify-center pt-5 pb-5">
         {alert[0] ? (
           <Alert color="failure" icon={HiInformationCircle} className="mx-4">
@@ -67,9 +67,9 @@ export default function Signup() {
           </Alert>
         ) : null}
       </div>
-      <div className="flex justify-center items-center pb-20">
-        <form >
-          <div className=" container flex max-w-sm  mx-4 flex-col gap-4 bg-black rounded-lg p-3 pl-5 pr-5">
+      <div  className="flex justify-center items-center mt-14 sm:mt-0">
+        <form>
+          <div className="container flex max-w-sm flex-col gap-4 bg-black rounded-lg p-3 px-5">
             <h2 className="text-white text-center font-bold text-2xl mt-4">
               Sign Up
             </h2>
@@ -131,41 +131,41 @@ export default function Signup() {
                 value={regno}
               />
             </div>
-            <div className="flex">
-            <div className="mr-2">
-              <div className="mb-2 block">
-                <Label
-                  htmlFor="password1"
-                  className="text-white"
-                  value="Your password"
+            <div className="flex justify-center items-center">
+              <div className="mr-2">
+                <div className="mb-2 block">
+                  <Label
+                    htmlFor="password1"
+                    className="text-white"
+                    value="Your password"
+                  />
+                </div>
+                <TextInput
+                  id="password1"
+                  required
+                  type="password"
+                  placeholder="••••••••••••••"
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
                 />
               </div>
-              <TextInput
-                id="password1"
-                required
-                type="password"
-                placeholder="••••••••••••••"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-              />
-            </div>
-            <div>
-              <div className="mb-2 block">
-                <Label
-                  htmlFor="password2"
-                  className="text-white"
-                  value="Your confirm password"
+              <div>
+                <div className="mb-2 block">
+                  <Label
+                    htmlFor="password2"
+                    className="text-white"
+                    value="confirm password"
+                  />
+                </div>
+                <TextInput
+                  id="password2"
+                  required
+                  type="password"
+                  placeholder="••••••••••••••"
+                  onChange={(e) => setCPassword(e.target.value)}
+                  value={cpassword}
                 />
               </div>
-              <TextInput
-                id="password2"
-                required
-                type="password"
-                placeholder="••••••••••••••"
-                onChange={(e) => setCPassword(e.target.value)}
-                value={cpassword}
-              />
-            </div>
             </div>
             <div className="flex items-center gap-2">
               <Checkbox id="agree" required />
@@ -177,12 +177,12 @@ export default function Signup() {
               </h2>
             </div>
             <div>
-            <h2 className="text-gray-500 text-xs">
+              <h2 className="text-gray-500 text-xs">
                 Already have account {" "}
                 <Link to="/login" className="text-white underline cursor-pointer">
                   Login Now
                 </Link>
-                </h2>
+              </h2>
             </div>
 
             <button

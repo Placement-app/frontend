@@ -2,8 +2,17 @@ import { Dropdown } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import {  HiViewGrid } from 'react-icons/hi';
+import { HiViewGrid } from 'react-icons/hi';
 import { FaThumbsUp } from "react-icons/fa";
+import { MdDashboard } from "react-icons/md";
+import { FaNewspaper } from "react-icons/fa6";
+import { MdViewCarousel } from "react-icons/md";
+import { MdEventAvailable } from "react-icons/md";
+import { IoSettings } from "react-icons/io5";
+import { CgProfile } from "react-icons/cg";
+import { FaBuildingShield } from "react-icons/fa6";
+import { IoLogOut } from "react-icons/io5";
+import { FaUsers } from "react-icons/fa";
 
 export default function AdminNav() {
   const [shownav, setShownav] = useState(true);
@@ -15,7 +24,7 @@ export default function AdminNav() {
   const [isOpen, setIsOpen] = useState(false);
 
   const check = async () => {
-    const getUser = await fetch("https://psa-server-placement-system-application.vercel.app/admin/protected", {
+    const getUser = await fetch("https://psa-server.vercel.app/admin/protected", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -55,7 +64,7 @@ export default function AdminNav() {
   if (shownav) {
     return (
       <>
-        <div className="z-12 bg-black flex items-center justify-between">
+        <div className="fixed w-full bg-black flex items-center justify-between" style={{ zIndex: 1000 }}>
           <div className="flex items-center">
             <button className="text-white text-xl m-4" onClick={toggleNav}>
               {isOpen ? (
@@ -95,37 +104,42 @@ export default function AdminNav() {
               inline
               className="bg-black border-2 m-2 mx-4"
               label={
+                // <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
                 <div className="w-10 h-10 mx-1 bg-white rounded-lg flex justify-center items-center">
                   <h1 className="text-md font-bold">{Name[0].toUpperCase()}</h1>
                 </div>
               }
             >
-              <Dropdown.Header className="border-none ">
-                <span className="block text-md text-white">{Name[1]}</span>
+              <Dropdown.Header className="border-none">
+                <span className="block text-2xl font-bold text-white">{Name[1]}</span>
                 <span className="block truncate text-sm font-medium text-white">
                   {email}
                 </span>
               </Dropdown.Header>
-              <Dropdown.Item className="text-white hover:text-black">
+              <Dropdown.Item className="text-white flex hover:text-black">
+                <MdDashboard className="mr-2" style={{ width: 22, height: 22 }} />
                 Dashboard
               </Dropdown.Item>
-              <Dropdown.Item className="text-white hover:text-black">
+              <Dropdown.Item className="text-white flex hover:text-black">
+                <CgProfile className="mr-2" style={{ width: 22, height: 22 }} />
                 My Profile
               </Dropdown.Item>
-              <Dropdown.Item className="text-white hover:text-black">
-                My Cubs
+              <Dropdown.Item className="text-white flex hover:text-black">
+                <FaBuildingShield className="mr-2" style={{ width: 22, height: 22 }} />
+                All Club
               </Dropdown.Item>
               <Dropdown.Item
-                className="text-white hover:text-black"
+                className="text-white flex hover:text-black"
                 onClick={signOut}
               >
+                <IoLogOut className="mr-2" style={{ width: 22, height: 22 }} />
                 Sign out
               </Dropdown.Item>
             </Dropdown>
           </div>
         </div>
         <div
-          className={`absolute z-10 bg-black ${isOpen ? "-left-0" : "-left-64"
+          className={`fixed mt-14 z-10 bg-black ${isOpen ? "-left-0" : "-left-64"
             }`}
         >
           <div className={"min-h-screen w-64 p-4"}>
@@ -137,30 +151,40 @@ export default function AdminNav() {
 
             </div>
             <ul className="mt-3">
-              <li className="text-white p-2 rounded">
+              <li className="text-white p-2 flex items-center rounded">
+                <MdDashboard className="mr-2" style={{ width: 22, height: 22 }} />
                 <Link to="/admin" onClick={e => { setIsOpen(false) }}>Dashboard</Link>
               </li>
-              <li className="text-white p-2 rounded">
+              <li className="text-white p-2 flex items-center rounded">
+                <FaBuildingShield className="mr-2" style={{ width: 22, height: 22 }} />
                 <Link to="/admin/clubs" onClick={e => { setIsOpen(false) }}>Clubs</Link>
               </li>
-              <li className="text-white p-2 rounded">
-
+              <li className="text-white p-2 flex items-center rounded">
+                <MdViewCarousel className="mr-2" style={{ width: 24, height: 24 }} />
                 <Dropdown label="Carousel" className="bg-black" inline>
                   <Dropdown.Item className="text-white hover:text-black" icon={HiViewGrid}><div onClick={e => navigate("/admin/allcarousel")}>All Clubs Carousel</div></Dropdown.Item>
                   <Dropdown.Item className="text-white hover:text-black" icon={FaThumbsUp}><div onClick={e => navigate("/admin/approvedcarousel")}>Approved Carousel</div></Dropdown.Item>
                 </Dropdown>
               </li>
-              <li className="text-white p-2 rounded">
+              <li className="text-white p-2 flex items-center rounded">
+                <FaNewspaper className="mr-2" style={{ width: 22, height: 22 }} />
                 <Link to="/admin/news" onClick={e => { setIsOpen(false) }}>News</Link>
               </li>
-              <li className="text-white p-2 rounded">
+              <li className="text-white p-2 flex items-center rounded">
+                <MdEventAvailable className="mr-2" style={{ width: 22, height: 22 }} />
                 <Link to="/events" onClick={e => { setIsOpen(false) }}>Events</Link>
               </li>
-              <li className="text-white p-2 rounded">
-                <Link to="/settigs" onClick={e => { setIsOpen(false) }}>Settings</Link>
+              <li className="text-white p-2 flex items-center rounded">
+                <CgProfile className="mr-2" style={{ width: 22, height: 22 }} />
+                <Link to="admin/users" onClick={e => { setIsOpen(false) }}>Users</Link>
               </li>
-              <li className="text-white p-2 rounded">
-                <Link to="/users" onClick={e => { setIsOpen(false) }}>Users</Link>
+              <li className="text-white p-2 flex items-center rounded">
+                <FaUsers className="mr-2" style={{ width: 22, height: 22 }} />
+                <Link to="/users" onClick={e => { setIsOpen(false) }}>Teams</Link>
+              </li>
+              <li className="text-white p-2 flex items-center rounded">
+                <IoSettings className="mr-2" style={{ width: 22, height: 22 }} />
+                <Link to="/settigs" onClick={e => { setIsOpen(false) }}>Settings</Link>
               </li>
               {/* Add more navigation items as needed */}
             </ul>

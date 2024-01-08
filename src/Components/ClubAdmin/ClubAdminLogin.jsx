@@ -17,7 +17,7 @@ export default function ClubAdminLogin() {
     if (cid == "" || password == "") {
       setAlert([true, "Please fill all the fields"]);
     } else {
-      const send = await fetch("https://psa-server-placement-system-application.vercel.app/myclub/login", {
+      const send = await fetch("https://psa-server.vercel.app/myclub/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,7 +38,7 @@ export default function ClubAdminLogin() {
   };
   
   return (
-    <div style={{ backgroundColor: "#070707" }}>
+    <div style={{ backgroundColor: "#070707",height:"130vh", }}>
       <div
         className="flex justify-center items-center"
         style={{ height: "100vh" }}
@@ -59,7 +59,7 @@ export default function ClubAdminLogin() {
               </Alert>
             ) : null}
           </div>
-          <div className=" container flex max-w-sm  mx-4 flex-col gap-4 bg-black rounded-lg p-3 pl-5 pr-5">
+          <div className=" container flex max-w-sm flex-col gap-4 bg-black rounded-lg p-3 pl-5 pr-5">
             <h2 className="text-white text-center font-bold text-2xl mt-4">
               Club Admin Login
             </h2>

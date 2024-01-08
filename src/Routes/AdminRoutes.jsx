@@ -15,7 +15,6 @@ export default function AdminRoutes() {
     <>
     <Route element={<Home/>} path='/admin/'/>
     <Route element={<AdminLogin/>} path='/admin/login'/>
-    <Route element={<Signup/>} path='/admin/signup'/>
     <Route element={<Clubs/>} path='/admin/clubs'/>
     <Route element={<News/>} path='/admin/news'/>
     <Route element={<AddClubs/>} path='/admin/addclub'/>

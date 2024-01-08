@@ -1,18 +1,25 @@
 import { Footer } from 'flowbite-react';
+import { useEffect, useState } from 'react';
 import { BsFacebook, BsGithub, BsInstagram, BsTwitter } from 'react-icons/bs';
 
 export default function UserFooter() {
+  const [showFooter, setShowFooter] = useState(true)
+  useEffect(() => {
+    if (location.pathname == "/signup" || location.pathname == "/login") {
+      setShowFooter(false);
+    } else {
+      setShowFooter(true);
+    }
+  }, [])
+
   return (
-    <Footer container className='mt-32'>
+    <Footer container className='bg-black text-white' style={{ borderRadius: 0,display:showFooter?null:"none" }}>
       <div className="w-full">
         <div className="grid w-full justify-between sm:flex sm:justify-between md:flex md:grid-cols-1">
           <div>
-            <Footer.Brand
-              alt="Flowbite Logo"
-              href="https://flowbite.com"
-              name="Flowbite"
-              src="https://flowbite.com/docs/images/logo.svg"
-            />
+            <h5 className='font-bold text-2xl m-4 text-center'>
+              Placement cell
+            </h5>
           </div>
           <div className="grid grid-cols-2 gap-8 sm:mt-4 sm:grid-cols-3 sm:gap-6">
             <div>
@@ -53,9 +60,9 @@ export default function UserFooter() {
         <Footer.Divider />
         <div className="w-full sm:flex sm:items-center sm:justify-between">
           <Footer.Copyright
-            by="Flowbite™"
+            by="Powered by IEEE and team."
             href="#"
-            year={2022}
+            year={2024}
           />
           <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
             <Footer.Icon

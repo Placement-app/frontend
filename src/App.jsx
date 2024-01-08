@@ -32,7 +32,7 @@ export default function App() {
         {ClubRoutes()}
         {AdminRoutes()}
       </Routes>
-      {/* <UserFooter /> */}
+      {Navi == "home" ? <UserFooter /> : null}
     </>
   );
 }

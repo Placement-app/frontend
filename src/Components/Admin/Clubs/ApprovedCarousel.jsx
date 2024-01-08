@@ -1,13 +1,12 @@
-import { Alert, Button } from 'flowbite-react'
+import { Alert, Button, Card } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 import { HiInformationCircle } from 'react-icons/hi'
-
 export default function ApprovedCarousel() {
   const [Data, setData] = useState([{ img: "", cid: "" }])
   const [Warning, setWarning] = useState([false, ""])
   const [Success, setSuccess] = useState([false, ""])
   const getData = async () => {
-    const req = await fetch('https://psa-server-placement-system-application.vercel.app/admin/approved_carousels', {
+    const req = await fetch('https://psa-server.vercel.app/admin/approved_carousels', {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
@@ -18,7 +17,7 @@ export default function ApprovedCarousel() {
     setData(res)
   }
   const remove = async (cid) => {
-    const req = await fetch('https://psa-server-placement-system-application.vercel.app/admin/remove_carousel', {
+    const req = await fetch('https://psa-server.vercel.app/admin/remove_carousel', {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -38,7 +37,9 @@ export default function ApprovedCarousel() {
     }
   }
   useEffect(() => {
+    document.title = "Approved Carousel | Admin"
     getData()
+
   }, [])
 
 
@@ -69,20 +70,31 @@ export default function ApprovedCarousel() {
           </span>
         </Alert>
       </div>
+
       <div className='flex justify-center items-center md:mx-5 '>
         {
           Data.length > 0 ? <div className='mt-10 grid md:grid-cols-3'>
             {
               Data.map((e, i) => {
                 return (
-                  <div key={i} className='mx-2 mt-2'>
-                    <img width={"90%"} src={`https://psa-server-placement-system-application.vercel.app/myclub/carousel/${e.img}`} alt="" />
-                    <h2 className='text-sm mt-2'>Club Id</h2>
-                    <h2 className='text-sm mb-2'>{e.cid}</h2>
-                    <div className='flex'>
-                      <Button color="warning" onClick={ele => remove(e.cid)}>Reomve</Button>
-                      <Button className='mx-2' color="dark">Change</Button>
-                    </div>
+                  <div >
+                    <Card
+                      key={i}
+                      className="max-w-sm mx-2 mt-2"
+                      imgAlt="Meaningful alt text for an image that is not purely decorative"
+                      imgSrc={`https://psa-server.vercel.app/myclub/carousel/${e.img}`}
+                    >
+                      <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                        Noteworthy technology acquisitions 2021
+                      </h5>
+                      <p className="font-normal text-gray-700 dark:text-gray-400">
+                        {e.cid}
+                      </p>
+                      <div className='flex'>
+                        <Button color="warning" onClick={ele => remove(e.cid)}>Reomve</Button>
+                        <Button className='mx-2' color="dark">Change</Button>
+                      </div>
+                    </Card>
                   </div>
                 )
               })

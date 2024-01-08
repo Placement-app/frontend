@@ -16,3 +16,40 @@
   --tw-bg-opacity: 1;
   --tw-box-shadow: none;
 }
+.remcroll::-webkit-scrollbar { width: 0 !important }
+.remcroll { overflow: -moz-scrollbars-none; }
+.remcroll { -ms-overflow-style: none; }
+
+
+/* Home launher */
+
+.launcher {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Set your desired height */
+  background-image: url('./assets/img/space.jpg'); /* Replace with your image URL */
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+.launcher::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Adjust the alpha value to control darkness */
+}
+
+.launcher > div {
+  position: relative;
+  z-index: 1; /* Ensures the text is above the background overlay */
+}
+
+/* Additional styles for the text and button */
+.launcher h2,
+.launcher h5,
+.launcher button {
+  color: #fff; /* Set text color to white */
+}

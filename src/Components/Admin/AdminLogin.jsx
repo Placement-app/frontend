@@ -19,7 +19,7 @@ export default function AdminLogin() {
       setAlert([true, "Please fill all the fields"]);
     } else {
       if (regex.test(password)) {
-        const send = await fetch("https://psa-server-placement-system-application.vercel.app/admin/login", {
+        const send = await fetch("https://psa-server.vercel.app/admin/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -28,7 +28,6 @@ export default function AdminLogin() {
           body: JSON.stringify({ email, password }),
         });
         const { msg } = await send.json();
-        console.log(msg);
         if (msg.token) {
           setCookie("AAUAT", msg.token);
           navigate("/admin");
@@ -44,47 +43,44 @@ export default function AdminLogin() {
     }
   };
   return (
-    <div style={{ backgroundColor: "#070707",width:"100%", height: "100vh"  }}>
+    <div style={{ backgroundColor: "#070707", height: "130vh" }}>
       <div
-        className="flex justify-center items-center"
-        style={{ height: "100vh"}}
-       >
+        className="flex justify-center items-center flex-col"
+        style={{ height: "100vh" }}
+      >
+        <div className="flex justify-center mx-5 mb-5 max-w-md ">
+          {alert[0] ? (
+            <Alert
+              color="failure"
+              icon={HiInformationCircle}
+            >
+              <span>
+                <p>
+                  <span className="font-medium">{alert[1]}</span>
+                </p>
+              </span>
+            </Alert>
+          ) : null}
+
+        </div>
         <form action="/">
-          <div  style={{position:"absolute",top:0,left:0,width:"100%"}}>
-            <div className="flex justify-center mx-5 mt-5">
-            {alert[0] ? (
-              <Alert
-                color="failure"
-                icon={HiInformationCircle}
-              >
-                <span>
-                  <p>
-                    <span className="font-medium">{alert[1]}</span>
-                  </p>
-                </span>
-              </Alert>
-            ) : null}
-            
-            </div>
-          </div>
-          <div className="mt-12 container flex max-w-sm  mx-4 flex-col gap-4 bg-black rounded-lg p-3 pl-5 pr-5">
+          <div className="container flex max-w-sm flex-col gap-4 bg-black rounded-lg p-3 pl-5 pr-5">
             <h2 className="text-white text-center font-bold text-2xl mt-4">
               Master Login
             </h2>
             <h2 className="text-gray-500 text-center text-sm mx-4">
-              Welcome Back user!, Login in placement app to get latest trenings
-              of clubs and placements related news
+              Welcome Back Admin!, This is only for admins as it is admins pannel.
             </h2>
             <div>
               <div className="mb-2 block">
                 <Label
-                  htmlFor="email1"
+                  htmlFor="email-admin"
                   value="Your email"
                   className="text-white"
                 />
               </div>
               <TextInput
-                id="email1"
+                id="email-admin"
                 placeholder="Eg. Joe@flowbite.com"
                 required
                 className="text-white bg-black"
@@ -96,13 +92,13 @@ export default function AdminLogin() {
             <div>
               <div className="mb-2 block">
                 <Label
-                  htmlFor="password1"
+                  htmlFor="password-admin"
                   className="text-white"
                   value="Your password"
                 />
               </div>
               <TextInput
-                id="password1"
+                id="password-admin"
                 required
                 type="password"
                 placeholder="••••••••••••••"
@@ -114,17 +110,7 @@ export default function AdminLogin() {
               <Checkbox id="agree" required />
               <h2 className="text-gray-500 text-center text-xs">Remember me</h2>
             </div>
-            <div>
-              <h2 className="text-gray-500 text-xs">
-                If Don't have account{" "}
-                <Link
-                  to="/signup"
-                  className="text-white underline cursor-pointer"
-                >
-                  Create New One
-                </Link>
-              </h2>
-            </div>
+
             <button
               type="submit"
               onClick={loginBtn}

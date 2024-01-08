@@ -1,7 +1,18 @@
-import { Dropdown, Navbar } from "flowbite-react";
+import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { MdDashboard } from "react-icons/md";
+import { RiTeamFill } from "react-icons/ri";
+import { FiTrendingUp } from "react-icons/fi";
+import { FaNewspaper } from "react-icons/fa6";
+import { MdViewCarousel } from "react-icons/md";
+import { MdEventAvailable } from "react-icons/md";
+import { IoSettings } from "react-icons/io5";
+import { CgProfile } from "react-icons/cg";
+import { FaBuildingShield } from "react-icons/fa6";
+import { IoLogOut } from "react-icons/io5";
+import { FaBell } from "react-icons/fa";
 
 export default function ClubAdminNav() {
   const [shownav, setShownav] = useState(true);
@@ -13,7 +24,7 @@ export default function ClubAdminNav() {
   const navigate = useNavigate()
 
   const check = async () => {
-    const getUser = await fetch("https://psa-server-placement-system-application.vercel.app/myclub/protected", {
+    const getUser = await fetch("https://psa-server.vercel.app/myclub/protected", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,18 +32,18 @@ export default function ClubAdminNav() {
       mode: "cors",
       body: JSON.stringify({ token: cookie.CAAUAT }),
     });
-    const {msg,founder,email} = await getUser.json();
+    const { msg, founder, email } = await getUser.json();
     console.log(msg);
     if (msg == "Access granted") {
       setName([founder.slice(0, 2), founder]);
       setEmail(email);
-    }else{
+    } else {
       // navigate('/myclub/login')
     }
   };
   const signOut = async () => {
     const logout = setCookie("CAAUAT", null);
-    navigate("/admin/login")
+    navigate("/myclub/login")
   };
   const toggleNav = () => {
     setIsOpen(!isOpen);
@@ -51,7 +62,7 @@ export default function ClubAdminNav() {
   if (shownav) {
     return (
       <>
-        <div className="z-12 bg-black flex items-center justify-between">
+        <div className="fixed bg-black flex items-center justify-between w-full" style={{zIndex:1000}}>
           <div className="flex items-center">
             <button className="text-white text-xl m-4" onClick={toggleNav}>
               {isOpen ? (
@@ -85,79 +96,166 @@ export default function ClubAdminNav() {
               Placement App Club Admin
             </h2>
           </div>
-          <div className="mx-4">
+          <div className="mx-4 flex justify-center items-center">
+            <Dropdown
+              arrowIcon={false}
+              inline
+              className="bg-black border-2 rounded m-2 mx-4"
+              label={
+                <FaBell color="white" style={{ width: 25, height: 25 }} className="mr-4" />
+              }
+            >
+              <Dropdown.Header className="text-white" >
+                <h1 className="font-bold text-xl p-3">Your Notifications</h1>
+                <ul style={{ maxWidth: 300, maxHeight: 500, overflow: "auto", }} className="remcroll">
+                  <li className="hover:text-black hover:bg-white cursor-pointer p-3 flex items-center rounded">
+                    <Avatar style={{ width: 100 }} className="mr-3" img="https://img.freepik.com/free-photo/luxurious-car-parked-highway-with-illuminated-headlight-sunset_181624-60607.jpg" />
+                    <div>
+                      <h5>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione, eaque.
+                      </h5>
+                      <h5 className="text-gray-400">
+                        8:21 PM 28 Nov 2023
+                      </h5>
+                    </div>
+                  </li>
+                  <li className="hover:text-black hover:bg-white cursor-pointer p-3 flex items-center rounded">
+                    <MdViewCarousel style={{ width: 100, height: 50 }} className="mr-3" />
+                    <div>
+                      <h5>Congarlutaions carousel approved, adipisicing elit. Ratione, eaque.
+                      </h5>
+                      <h5 className="text-gray-400">
+                        2:29 PM 28 Nov 2023
+                      </h5>
+                    </div>
+                  </li>
+                  <li className="hover:text-black hover:bg-white cursor-pointer p-3 flex items-center rounded">
+                    <div className="p-2 mr-5 bg-white text-black rounded flex justify-center items-center font-bold text-lg">
+                      YS
+                    </div>
+                    <div>
+                      <h5>Metting sent, adipisicing elit. Ratione, eaque.
+                      </h5>
+                      <h5 className="text-gray-400">
+                        10:46 AM 28 Nov 2023
+                      </h5>
+                    </div>
+                  </li>
+                  <li className="hover:text-black hover:bg-white cursor-pointer p-3 flex items-center rounded">
+                    <FaNewspaper style={{ width: 80, height: 50 }} className="mr-5" />
+                    <div>
+                      <h5>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione, eaque.
+                      </h5>
+                      <h5 className="text-gray-400">
+                        8:21 PM 28 Nov 2023
+                      </h5>
+                    </div>
+                  </li>
+                  <li className="hover:text-black hover:bg-white cursor-pointer p-3 flex items-center rounded">
+                    <div className="p-2 mr-5 bg-white text-black rounded flex justify-center items-center font-bold text-lg">
+                      SR
+                    </div>
+                    <div>
+                      <h5>Appoinment of new news feed sent, adipisicing elit. Ratione, eaque.
+                      </h5>
+                      <h5 className="text-gray-400">
+                        11:23 AM 28 Nov 2023
+                      </h5>
+                    </div>
+                  </li>
+                  <li className="hover:text-black hover:bg-white cursor-pointer p-3 flex justify-start">
+                    <Avatar style={{ width: 100 }} className="mr-3" img="https://img.freepik.com/free-photo/luxurious-car-parked-highway-with-illuminated-headlight-sunset_181624-60607.jpg" />
+                    <div>
+                      <h5>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione, eaque.
+                      </h5>
+                      <h5 className="text-gray-400">
+                        8:21 PM 28 Nov 2023
+                      </h5>
+                    </div>
+                  </li>
+                </ul>
+              </Dropdown.Header>
+            </Dropdown>
+
             <Dropdown
               arrowIcon={false}
               inline
               className="bg-black border-2 m-2 mx-4"
               label={
-                // <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
                 <div className="w-10 h-10 mx-1 bg-white rounded-lg flex justify-center items-center">
                   <h1 className="text-md font-bold">{Name[0].toUpperCase()}</h1>
                 </div>
               }
             >
-              <Dropdown.Header className="border-none ">
-                <span className="block text-md text-white">{Name[1]}</span>
+              <Dropdown.Header className="border-none">
+                <span className="block text-2xl font-bold text-white">{Name[1]}</span>
                 <span className="block truncate text-sm font-medium text-white">
                   {email}
                 </span>
               </Dropdown.Header>
-              <Dropdown.Item className="text-white hover:text-black">
+              <Dropdown.Item className="text-white flex hover:text-black">
+                <MdDashboard className="mr-2" style={{ width: 22, height: 22 }} />
                 Dashboard
               </Dropdown.Item>
-              <Dropdown.Item className="text-white hover:text-black">
-              My Profile
+              <Dropdown.Item className="text-white flex hover:text-black">
+                <CgProfile className="mr-2" style={{ width: 22, height: 22 }} />
+                My Profile
               </Dropdown.Item>
-              <Dropdown.Item className="text-white hover:text-black">
+              <Dropdown.Item className="text-white flex hover:text-black">
+                <FaBuildingShield className="mr-2" style={{ width: 22, height: 22 }} />
                 My Club
               </Dropdown.Item>
               <Dropdown.Item
-                className="text-white hover:text-black"
+                className="text-white flex hover:text-black"
                 onClick={signOut}
               >
+                <IoLogOut className="mr-2" style={{ width: 22, height: 22 }} />
                 Sign out
               </Dropdown.Item>
             </Dropdown>
           </div>
         </div>
         <div
-          className={`absolute z-10 bg-black ${
-            isOpen ? "-left-0" : "-left-64"
-          }`}
+          className={`fixed mt-14 z-10 bg-black ${isOpen ? "-left-0" : "-left-64"
+            }`}
         >
           <div className={"min-h-screen w-64 p-4"}>
             <div>
+              <h2 className="text-black rounded bg-white font-bold text-4xl p-5" style={{ maxWidth: "fit-content" }}>
+                {Name[0].toUpperCase()}
+              </h2>
               <h2 className="text-white font-bold pl-2 pt-2 text-2xl">
-                  {Name[1]}
+                {Name[1]}
               </h2>
               <h3 className="bg-white w-max ml-2 text-xs px-2">Club Admin</h3>
-
             </div>
             <ul className="mt-3">
-              <li className="text-white p-2 rounded">
-                <Link to="/myclub" onClick={e=>{setIsOpen(false)}}>Dashboard</Link>
+              <li className="text-white p-2 rounded flex items-center">
+                <MdDashboard className="mr-2" style={{ width: 22, height: 22 }} />
+                <Link to="/myclub" onClick={e => { setIsOpen(false) }}>Dashboard</Link>
               </li>
-              <li className="text-white p-2 rounded">
-                <Link to="/myclub" onClick={e=>{setIsOpen(false)}}>Members</Link>
+              <li className="text-white p-2 rounded flex items-center">
+                <RiTeamFill className="mr-2" style={{ width: 22, height: 22 }} />
+                <Link to="/myclub" onClick={e => { setIsOpen(false) }}>Members</Link>
               </li>
-              <li className="text-white p-2 rounded">
-                <Link to="/myclub" onClick={e=>{setIsOpen(false)}}>Add Trending</Link>
+              <li className="text-white p-2 rounded flex items-center">
+                <FiTrendingUp className="mr-2" style={{ width: 22, height: 22 }} />
+                <Link to="/myclub" onClick={e => { setIsOpen(false) }}>Add Trending</Link>
               </li>
-              <li className="text-white p-2 rounded">
-                <Link to="/myclub" onClick={e=>{setIsOpen(false)}}>Add News</Link>
+              <li className="text-white p-2 rounded flex items-center">
+                <FaNewspaper className="mr-2" style={{ width: 22, height: 22 }} />
+                <Link to="/myclub" onClick={e => { setIsOpen(false) }}>Add News</Link>
               </li>
-              <li className="text-white p-2 rounded">
-                <Link to="/myclub/addcarousel" onClick={e=>{setIsOpen(false)}}>Add Carousel</Link>
+              <li className="text-white p-2 rounded flex items-center">
+                <MdViewCarousel className="mr-2" style={{ width: 22, height: 22 }} />
+                <Link to="/myclub/addcarousel" onClick={e => { setIsOpen(false) }}>Add Carousel</Link>
               </li>
-              <li className="text-white p-2 rounded">
-                <Link to="/events" onClick={e=>{setIsOpen(false)}}>Club Events</Link>
+              <li className="text-white p-2 rounded flex items-center">
+                <MdEventAvailable className="mr-2" style={{ width: 22, height: 22 }} />
+                <Link to="/events" onClick={e => { setIsOpen(false) }}>Club Events</Link>
               </li>
-              <li className="text-white p-2 rounded">
-                <Link to="/settigs" onClick={e=>{setIsOpen(false)}}>Settings</Link>
-              </li>
-              <li className="text-white p-2 rounded">
-                <Link to="/users" onClick={e=>{setIsOpen(false)}}>Users</Link>
+              <li className="text-white p-2 rounded flex items-center">
+                <IoSettings className="mr-2" style={{ width: 22, height: 22 }} />
+                <Link to="/settigs" onClick={e => { setIsOpen(false) }}>Settings</Link>
               </li>
               {/* Add more navigation items as needed */}
             </ul>
