@@ -21,7 +21,7 @@ export default function HomeCarousel() {
   };
 
   const getCarousel = async () => {
-    const req = await fetch('https://psa-server.vercel.app/user/carousel', {
+    const req = await fetch('http://localhost:5000/user/carousel', {
       method: "GET",
       mode: "cors",
     })
@@ -41,7 +41,7 @@ export default function HomeCarousel() {
     slides.length > 0 ?
       <div className='h-[480px]'>
         <div
-          style={{ backgroundImage: `url(https://psa-server.vercel.app/myclub/carousel/${slides[currentIndex].img})` }}
+          style={{ backgroundImage: `url(http://localhost:5000/myclub/carousel/${slides[currentIndex].img})` }}
           className='w-full h-full bg-center bg-cover duration-500'
         ></div>
         <div className='flex top-4 justify-center py-2'>

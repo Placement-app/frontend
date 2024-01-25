@@ -10,7 +10,7 @@ export default function Nav() {
   const [email, setEmail] = useState("")
   const [loader, setLoader] = useState(true)
   const check = async () => {
-    const getUser = await fetch("https://psa-server.vercel.app/user/protected", {
+    const getUser = await fetch("http://localhost:5000/user/protected", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

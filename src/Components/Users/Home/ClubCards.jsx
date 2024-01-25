@@ -39,7 +39,7 @@ export default function ClubCards() {
             {
               clubItems.map((e, i) => {
                 return (
-                  <Link className="flex justify-center items-center cursor-pointer">
+                  <Link key={i} className="flex justify-center items-center cursor-pointer">
                     <img
                       className="mb-3 rounded-md"
                       src={e.logo}

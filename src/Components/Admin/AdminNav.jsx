@@ -2,8 +2,6 @@ import { Dropdown } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { HiViewGrid } from 'react-icons/hi';
-import { FaThumbsUp } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { FaNewspaper } from "react-icons/fa6";
 import { MdViewCarousel } from "react-icons/md";
@@ -24,7 +22,7 @@ export default function AdminNav() {
   const [isOpen, setIsOpen] = useState(false);
 
   const check = async () => {
-    const getUser = await fetch("https://psa-server.vercel.app/admin/protected", {
+    const getUser = await fetch("http://localhost:5000/admin/protected", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -104,7 +102,6 @@ export default function AdminNav() {
               inline
               className="bg-black border-2 m-2 mx-4"
               label={
-                // <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
                 <div className="w-10 h-10 mx-1 bg-white rounded-lg flex justify-center items-center">
                   <h1 className="text-md font-bold">{Name[0].toUpperCase()}</h1>
                 </div>
@@ -161,10 +158,7 @@ export default function AdminNav() {
               </li>
               <li className="text-white p-2 flex items-center rounded">
                 <MdViewCarousel className="mr-2" style={{ width: 24, height: 24 }} />
-                <Dropdown label="Carousel" className="bg-black" inline>
-                  <Dropdown.Item className="text-white hover:text-black" icon={HiViewGrid}><div onClick={e => navigate("/admin/allcarousel")}>All Clubs Carousel</div></Dropdown.Item>
-                  <Dropdown.Item className="text-white hover:text-black" icon={FaThumbsUp}><div onClick={e => navigate("/admin/approvedcarousel")}>Approved Carousel</div></Dropdown.Item>
-                </Dropdown>
+                <Link to="/admin/carousel" onClick={e => { setIsOpen(false) }}>Carousel</Link>
               </li>
               <li className="text-white p-2 flex items-center rounded">
                 <FaNewspaper className="mr-2" style={{ width: 22, height: 22 }} />
@@ -172,11 +166,11 @@ export default function AdminNav() {
               </li>
               <li className="text-white p-2 flex items-center rounded">
                 <MdEventAvailable className="mr-2" style={{ width: 22, height: 22 }} />
-                <Link to="/events" onClick={e => { setIsOpen(false) }}>Events</Link>
+                <Link to="/admin/events" onClick={e => { setIsOpen(false) }}>Events</Link>
               </li>
               <li className="text-white p-2 flex items-center rounded">
                 <CgProfile className="mr-2" style={{ width: 22, height: 22 }} />
-                <Link to="admin/users" onClick={e => { setIsOpen(false) }}>Users</Link>
+                <Link to="/admin/users" onClick={e => { setIsOpen(false) }}>Users</Link>
               </li>
               <li className="text-white p-2 flex items-center rounded">
                 <FaUsers className="mr-2" style={{ width: 22, height: 22 }} />
@@ -186,7 +180,6 @@ export default function AdminNav() {
                 <IoSettings className="mr-2" style={{ width: 22, height: 22 }} />
                 <Link to="/settigs" onClick={e => { setIsOpen(false) }}>Settings</Link>
               </li>
-              {/* Add more navigation items as needed */}
             </ul>
           </div>
         </div>

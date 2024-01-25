@@ -1,11 +1,25 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, Dropdown, TextInput, Rating, Kbd } from 'flowbite-react';
 import { IoSearch } from "react-icons/io5";
 import { FaShareAlt } from "react-icons/fa";
 
 export default function Clubs() {
+
+    const [Data, setData] = useState([])
+
+    const load = async () => {
+        const send = await fetch("http://localhost:5000/user/clubs", {
+            method: "GET",
+            mode: "cors",
+        });
+        const { data } = await send.json();
+        console.log(data);
+        setData(data);
+    };
+
     useEffect(() => {
         document.title = "Clubs | Place app"
+        load()
     }, [])
     return (
         <>
@@ -45,124 +59,47 @@ export default function Clubs() {
                 </Dropdown>
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 '>
-                <div className='flex justify-center'>
-                    <Card className="max-w-xs border-2 m-2">
-                        <div className="flex justify-end px-4 pt-2">
-                            <FaShareAlt className='cursor-pointer' />
-                        </div>
-                        <div className="flex items-center justify-center w-full">
-                            <img
-                                height="100"
-                                src="https://psa-server.vercel.app/admin/clublogo/logo-1702998139683.png"
-                                className="mb-3 rounded"
-                                style={{ width: 150 }}
-                            />
-                        </div>
-                        <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">IEEE CISSC</h5>
-                        <div className='text-sm'>
-                            Lorem ipsum dolor sit amet   elit. Doloremque perferendis maxime quasi! Quae, officia suscipit!
-                        </div>
-                        <div >
-                            <Rating>
-                                <Rating.Star />
-                                <p className="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">4.95 out of 5</p>
-                            </Rating>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                            <div className="shrink-0">
-                                <img
-                                    alt="Neil image"
-                                    src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FyfGVufDB8fDB8fHww"
-                                    className="rounded-full"
-                                    style={{ width: 40, height: 40 }}
-                                />
+                {
+                    Data.map((e, i) => {
+                        return (
+                            <div key={i} className='flex justify-center'>
+                                <Card className="max-w-xs border-2 m-2">
+                                    <div className="flex justify-end px-4 pt-2">
+                                        <FaShareAlt className='cursor-pointer' />
+                                    </div>
+                                    <div className="flex items-center justify-center w-full">
+                                        <img
+                                            height="100"
+                                            src={`http://localhost:5000/admin/clublogo/${e.logo}`}
+                                            className="mb-3 rounded"
+                                            style={{ height: 150 }}
+                                        />
+                                    </div>
+                                    <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{e.name}</h5>
+                                    <div className='text-sm'>
+                                        {e.about}
+                                    </div>
+                                    <div >
+                                        <Rating>
+                                            <Rating.Star />
+                                            <p className="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">4.95 out of 5</p>
+                                        </Rating>
+                                    </div>
+                                    <div className="flex items-center space-x-4">
+                                            <div className='text-md text-white bg-black rounded px-2 py-1'>
+                                            {e.founder.slice(0,2).toUpperCase()}
+                                            </div>
+                                        <div className="min-w-0 flex-1">
+                                            <p className="truncate text-sm font-medium text-gray-900 dark:text-white">Founder</p>
+                                            <p className="truncate text-sm text-gray-500 dark:text-gray-400">{e.founder}</p>
+                                        </div>
+                                    </div>
+                                </Card>
                             </div>
-                            <div className="min-w-0 flex-1">
-                                <p className="truncate text-sm font-medium text-gray-900 dark:text-white">Founder</p>
-                                <p className="truncate text-sm text-gray-500 dark:text-gray-400">email@windster.com</p>
-                            </div>
-                        </div>
-                    </Card>
-                </div>
-                <div className='flex justify-center'>
-                    <Card className="max-w-xs border-2 m-2">
-                        <div className="flex justify-end px-4 pt-2">
-                            <FaShareAlt className='cursor-pointer' />
-                        </div>
-                        <div className="flex items-center justify-center w-full">
-                            <img
-                                height="100"
-                                src="https://psa-server.vercel.app/admin/clublogo/logo-1702998139683.png"
-                                className="mb-3 rounded"
-                                style={{ width: 150 }}
-                            />
-                        </div>
-                        <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">IEEE CISSC</h5>
-                        <div className='text-sm'>
-                            Lorem ipsum dolor sit amet   elit. Doloremque perferendis maxime quasi! Quae, officia suscipit!
-                        </div>
-                        <div >
-                            <Rating>
-                                <Rating.Star />
-                                <p className="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">4.95 out of 5</p>
-                            </Rating>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                            <div className="shrink-0">
-                                <img
-                                    alt="Neil image"
-                                    src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FyfGVufDB8fDB8fHww"
-                                    className="rounded-full"
-                                    style={{ width: 40, height: 40 }}
-                                />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                                <p className="truncate text-sm font-medium text-gray-900 dark:text-white">Founder</p>
-                                <p className="truncate text-sm text-gray-500 dark:text-gray-400">email@windster.com</p>
-                            </div>
-                        </div>
-                    </Card>
-                </div>
+                        )
+                    })
+                }
 
-                <div className='flex justify-center'>
-                    <Card className="max-w-xs border-2 m-2">
-                        <div className="flex justify-end px-4 pt-2">
-                            <FaShareAlt className='cursor-pointer' />
-                        </div>
-                        <div className="flex items-center justify-center w-full">
-                            <img
-                                height="100"
-                                src="https://psa-server.vercel.app/admin/clublogo/logo-1702998139683.png"
-                                className="mb-3 rounded"
-                                style={{ width: 150 }}
-                            />
-                        </div>
-                        <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">IEEE CISSC</h5>
-                        <div className='text-sm'>
-                            Lorem ipsum dolor sit amet   elit. Doloremque perferendis maxime quasi! Quae, officia suscipit!
-                        </div>
-                        <div >
-                            <Rating>
-                                <Rating.Star />
-                                <p className="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">4.95 out of 5</p>
-                            </Rating>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                            <div className="shrink-0">
-                                <img
-                                    alt="Neil image"
-                                    src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FyfGVufDB8fDB8fHww"
-                                    className="rounded-full"
-                                    style={{ width: 40, height: 40 }}
-                                />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                                <p className="truncate text-sm font-medium text-gray-900 dark:text-white">Founder</p>
-                                <p className="truncate text-sm text-gray-500 dark:text-gray-400">email@windster.com</p>
-                            </div>
-                        </div>
-                    </Card>
-                </div>
 
             </div>
 

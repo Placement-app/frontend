@@ -23,8 +23,13 @@ export default function ClubAdminNav() {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate()
 
+  const signOut = async () => {
+    const logout = setCookie("CAAUAT", null);
+    navigate("/myclub/login")
+  };
+
   const check = async () => {
-    const getUser = await fetch("https://psa-server.vercel.app/myclub/protected", {
+    const getUser = await fetch("http://localhost:5000/myclub/protected", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,14 +42,15 @@ export default function ClubAdminNav() {
     if (msg == "Access granted") {
       setName([founder.slice(0, 2), founder]);
       setEmail(email);
+    } else if (msg == "Account deleted") {
+      signOut()
+
     } else {
-      // navigate('/myclub/login')
+      navigate('/myclub/login')
     }
   };
-  const signOut = async () => {
-    const logout = setCookie("CAAUAT", null);
-    navigate("/myclub/login")
-  };
+
+
   const toggleNav = () => {
     setIsOpen(!isOpen);
   };
@@ -62,7 +68,7 @@ export default function ClubAdminNav() {
   if (shownav) {
     return (
       <>
-        <div className="fixed bg-black flex items-center justify-between w-full" style={{zIndex:1000}}>
+        <div className="fixed bg-black flex items-center justify-between w-full" style={{ zIndex: 1000 }}>
           <div className="flex items-center">
             <button className="text-white text-xl m-4" onClick={toggleNav}>
               {isOpen ? (
@@ -243,21 +249,20 @@ export default function ClubAdminNav() {
               </li>
               <li className="text-white p-2 rounded flex items-center">
                 <FaNewspaper className="mr-2" style={{ width: 22, height: 22 }} />
-                <Link to="/myclub" onClick={e => { setIsOpen(false) }}>Add News</Link>
+                <Link to="/myclub/news" onClick={e => { setIsOpen(false) }}>Add News</Link>
               </li>
               <li className="text-white p-2 rounded flex items-center">
                 <MdViewCarousel className="mr-2" style={{ width: 22, height: 22 }} />
-                <Link to="/myclub/addcarousel" onClick={e => { setIsOpen(false) }}>Add Carousel</Link>
+                <Link to="/myclub/carousel" onClick={e => { setIsOpen(false) }}>Add Carousel</Link>
               </li>
               <li className="text-white p-2 rounded flex items-center">
                 <MdEventAvailable className="mr-2" style={{ width: 22, height: 22 }} />
-                <Link to="/events" onClick={e => { setIsOpen(false) }}>Club Events</Link>
+                <Link to="/myclub/events" onClick={e => { setIsOpen(false) }}>Club Events</Link>
               </li>
               <li className="text-white p-2 rounded flex items-center">
                 <IoSettings className="mr-2" style={{ width: 22, height: 22 }} />
                 <Link to="/settigs" onClick={e => { setIsOpen(false) }}>Settings</Link>
               </li>
-              {/* Add more navigation items as needed */}
             </ul>
           </div>
         </div>

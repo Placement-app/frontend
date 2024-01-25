@@ -1,61 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import announcement from '../../../assets/img/announcement.png'
 import events from '../../../assets/img/events.png'
-import { Button, Timeline } from "flowbite-react";
+import { Timeline } from "flowbite-react";
 import { HiArrowNarrowRight, HiCalendar } from 'react-icons/hi';
 
 export default function HomeNews() {
-  const newsItems = [
-    {
-      id: 1,
-      title: "Breaking News of IEEE CISSC",
-      logo: "https://entrepreneurship.ieee.org/wp-content/uploads/2018/08/CIS_logo.png",
-      content:
-        "New Events were going to organize in BEL 5th floor of IEEE SRM Chapter Room",
-    },
-    {
-      id: 2,
-      title: "Latest Update",
-      logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9l8KUhlm2Vro5iR93z5xvwdJ9rddwlJBptSoldrTIlA&s",
-      content: "Here is the latest news update for you.",
-    },
-    {
-      id: 3,
-      title: "Breaking News of IEEE CISSC",
-      logo: "https://entrepreneurship.ieee.org/wp-content/uploads/2018/08/CIS_logo.png",
-      content:
-        "New Events were going to organize in BEL 5th floor of IEEE SRM Chapter Room",
-    },
-    {
-      id: 4,
-      title: "Latest Update",
-      logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9l8KUhlm2Vro5iR93z5xvwdJ9rddwlJBptSoldrTIlA&s",
-      content: "Here is the latest news update for you.",
-    },
-    // Add more news items here
-  ];
+
+  const [Data, setData] = useState([])
+  
+  const load = async () => {
+    const send = await fetch("http://localhost:5000/user/news", {
+      method: "GET",
+      mode: "cors",
+    });
+    const {data} = await send.json();
+    console.log(data);
+    setData(data);
+  };
+
+  useEffect(() => {
+    load()
+  }, [])
+
   return (
     <div className="px-4 mt-20">
       <div className="container mx-auto rounded-md flex flex-col md:flex-row justify-center">
         <div className="h-84 overflow-hidden lg:max-w-xl">
           <h1 className="text-2xl font-bold p-4 font-extrabold text-xl sm:text-4xl flex justify-center items-center"><img src={announcement} style={{ width: 40, marginRight: 10 }} alt="" />Announcement</h1>
           <ul className="overflow-y-scroll h-full remcroll  mx-2 pb-2">
-            {newsItems.map((item) => (
+            {Data.map((item) => (
               <li
-                key={item.id}
+                key={item.cid}
                 className="mt-2 mb-2 border p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg"
-              >
+                onClick={e=>{item.link!==""&&item.link!==undefined?window.location.replace(item.link):null}}
+              >  
                 <div className="flex items-center">
-                  <div className="w-36">
-                    <img src={item.logo} alt="" className="h-10 md:h-14" />
+                  <div style={{width:100}}>
+                    <img src={`http://localhost:5000/admin/clublogo/${item.logo}`} alt="" />
                   </div>
-                  <div className="">
+                  <div className="w-full">
                     <h2 className="text-sm md:text-lg font-semibold">
-                      {item.title}
+                      {item.head}
                     </h2>
-                    <p className="text-xs md:text-sm text-gray-700">
-                      {item.content}
+                    <p className="text-xs md:text-sm text-gray-500 ">
+                      {item.date!==null?item.date.split("T")[0]:null}
                     </p>
+                    <p className="text-xs md:text-sm text-gray-700">
+                      {item.description}
+                    </p>
+                    
                   </div>
                 </div>
               </li>
@@ -101,7 +94,7 @@ export default function HomeNews() {
         </div>
       </div>
       <div className="flex justify-center w-full">
-        
+
         <button className='text-xs  sm:text-sm text-white bg-black px-4 py-2 flex items-center'>
           Learn More
           <HiArrowNarrowRight className="ml-2 h-3 w-3" />

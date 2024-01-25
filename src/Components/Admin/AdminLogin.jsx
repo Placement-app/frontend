@@ -19,7 +19,7 @@ export default function AdminLogin() {
       setAlert([true, "Please fill all the fields"]);
     } else {
       if (regex.test(password)) {
-        const send = await fetch("https://psa-server.vercel.app/admin/login", {
+        const send = await fetch("http://localhost:5000/admin/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

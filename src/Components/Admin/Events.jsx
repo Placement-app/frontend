@@ -6,16 +6,15 @@ import { Link } from "react-router-dom";
 import { TbReplace } from "react-icons/tb";
 import { VscInsert } from "react-icons/vsc";
 
-export default function News() {
+export default function Events() {
   const [Data, setData] = useState([]);
   const [openViewDocs, setopenViewDocs] = useState([false, { name: "", logo: "", founder: "", link: "", head: "", description: "", content: "", cid: "", approved: null, position: 0 }])
   const [openPopup, setopenPopup] = useState(false)
   const [Warning, setWarning] = useState([false, ""])
   const [Success, setSuccess] = useState([false, ""])
-  const [opt, setopt] = useState(0)
 
   const load = async () => {
-    const send = await fetch("http://localhost:5000/admin/news_approval", {
+    const send = await fetch("http://localhost:5000/admin/events_approval", {
       method: "GET",
       mode: "cors",
     });
@@ -24,13 +23,13 @@ export default function News() {
   };
 
   const accept = async (d) => {
-    const send = await fetch("http://localhost:5000/admin/approve_news", {
+    const send = await fetch("http://localhost:5000/admin/approve_events", {
       method: "POST",
       mode: "cors",
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ cid: d.cid, head: d.head, description: d.description, content: d.content, link: d.link, position: opt })
+      body: JSON.stringify({ cid: d.cid, title: d.title, description: d.description, content: d.content, link: d.link, timeStart: d.timeStart, timeEnd: d.timeEnd })
     });
     const res = await send.json();
     if (res.approved == false) {
@@ -43,14 +42,14 @@ export default function News() {
     }
   };
 
-  const decline = async (cid, head, description, link, content, removed) => {
-    const send = await fetch("http://localhost:5000/admin/decline_news", {
+  const decline = async (cid, title, description, link, content, timeStart, timeEnd, removed) => {
+    const send = await fetch("http://localhost:5000/admin/decline_events", {
       method: "POST",
       mode: "cors",
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ cid, head, description, link, content, removed })
+      body: JSON.stringify({ cid, title, description, link, content, timeStart, timeEnd, removed })
     });
     const res = await send.json();
     if (res.denied) {
@@ -62,40 +61,6 @@ export default function News() {
       setSuccess([false, ""])
     }
   };
-
-  const change = async (option, proceed, position) => {
-    try {
-      const req = await fetch('http://localhost:5000/admin/change_news', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        mode: "cors",
-        body: JSON.stringify({ cid: openViewDocs[1].cid, position: position ? position : openViewDocs[1].position, option, proceed })
-
-      })
-      const res = await req.json()
-      if (res.msg === "already found") {
-        setopenPopup(true)
-      } else {
-        setopenPopup(false)
-        setopenViewDocs([false, openViewDocs[1]])
-        if (res.updated) {
-          setSuccess([true, res.msg])
-          setWarning([false, ""])
-          load()
-
-        } else {
-          setWarning([true, res.msg])
-          setSuccess([false, ""])
-        }
-      }
-
-    } catch (error) {
-      setWarning([true, "Something went wrong try again!"])
-      setSuccess([false, ""])
-    }
-  }
 
   useEffect(() => {
     document.title = " Approve News | Admin"
@@ -131,9 +96,6 @@ export default function News() {
                   <h2 className="text-3xl">
                     {openViewDocs[1].name}
                   </h2>
-                  <p className="text-base leading-relaxed text-gray-700 text-right">
-                    by {openViewDocs[1].founder}
-                  </p>
                 </div>
               </Modal.Header>
               <Modal.Body>
@@ -141,8 +103,14 @@ export default function News() {
                   {
                     openViewDocs[0] ?
                       <div>
+                        <h5 className="text-sm text-gray-500 font-bold mt-3">Timing</h5>
+                        <p className="font-bold text-gray-700"><span className="text-sm text-gray-500 font-bold mr-2 ml-2">Start </span> {openViewDocs[1].timeStart !== "" && openViewDocs[1].timeStart !== undefined ? openViewDocs[1].timeStart.split("T").map(e => e + "  ") : null}</p>
+                        <p className="font-bold text-gray-700"><span className="text-sm text-gray-500 font-bold mr-5 ml-2">End</span>{openViewDocs[1].timeEnd !== "" && openViewDocs[1].timeEnd !== undefined ? openViewDocs[1].timeEnd.split("T").map(e => e + "  ") : null}</p>
+                        <h5 className="text-sm text-gray-500 font-bold mt-3">Link</h5>
+                        <h5 className="text-sm text-gray-800 text-justify">
+                          {openViewDocs[1].link !== null && openViewDocs[1].link !== undefined ? openViewDocs[1].link : "No Link"}
+                        </h5>
                         <h5 className="text-sm text-gray-500 font-bold mt-3">Content to be shown</h5>
-                        <h5 className="text-sm text-gray-800 font-bold">{new Date(openViewDocs[1].date).toISOString().split("T")[0]}</h5>
                         <h5 className="text-2xl font-bold text-gray-800 text-justify">
                           {openViewDocs[1].head}
                         </h5>
@@ -162,19 +130,7 @@ export default function News() {
                 {
                   openViewDocs[1].approved == true ?
                     <div className="flex">
-                      <select name="Position" className="rounded-md bg-black text-white mr-2" onChange={e => {
-                        setopt(e.target.value);
-                        setopenViewDocs([true, { ...openViewDocs[1], position: e.target.value }]);
-                        change(0, false, e.target.value)
-                      }} value={openViewDocs[1].position}>
-                        <option className="text-white" value="0">Out</option>
-                        <option className="text-white" value="1">1</option>
-                        <option className="text-white" value="2">2</option>
-                        <option className="text-white" value="3">3</option>
-                        <option className="text-white" value="4">4</option>
-                        <option className="text-white" value="5">5</option>
-                      </select>
-                      <Button color="red" onClick={() => { setopenViewDocs([false, openViewDocs[1]]); decline(openViewDocs[1].cid, openViewDocs[1].head, openViewDocs[1].description, openViewDocs[1].link, openViewDocs[1].content, true) }}>
+                      <Button color="red" onClick={() => { setopenViewDocs([false, openViewDocs[1]]); decline(openViewDocs[1].cid, openViewDocs[1].title, openViewDocs[1].description, openViewDocs[1].link, openViewDocs[1].content, openViewDocs[1].timeStart, openViewDocs[1].timeEnd, true) }}>
                         Remove
                       </Button>
                       <Modal show={openPopup} className="py-36" onClose={() => setopenPopup(false)}>
@@ -189,26 +145,13 @@ export default function News() {
                               To replace with old News use replace option and position of old News will be out.
                             </Alert>
                           </div>
-                          <div className="mt-4 mx-1 flex">
-                            <button onClick={e => { change(1, true) }} className="text-white bg-black rounded px-3 py-1 mx-1 cursor-pointer flex justify-center items-center text-sm"><VscInsert className="mr-2" color="white" style={{ height: 20, width: 20 }} /> Insert</button>
-                            <button onClick={e => { change(0, true) }} className="text-white bg-black rounded px-3 py-1 mx-1 cursor-pointer flex justify-center items-center text-sm"><TbReplace className="mr-2" color="white" style={{ height: 20, width: 20 }} /> Replace</button>
-                          </div>
-
                         </Modal.Body>
                       </Modal>
                     </div>
                     :
                     <div className="flex">
                       <Button className="bg-black mr-2" onClick={() => { setopenViewDocs([false, openViewDocs[1]]); accept(openViewDocs[1]) }}>Approve</Button>
-                      <select name="Position" className="rounded-md bg-black text-white mr-2" onChange={e => setopt(e.target.value)} value={opt}>
-                        <option className="text-white" value="0">Out</option>
-                        <option className="text-white" value="1">1</option>
-                        <option className="text-white" value="2">2</option>
-                        <option className="text-white" value="3">3</option>
-                        <option className="text-white" value="4">4</option>
-                        <option className="text-white" value="5">5</option>
-                      </select>
-                      <Button color="red" onClick={() => { setopenViewDocs([false, openViewDocs[1]]); decline(openViewDocs[1].cid, openViewDocs[1].head, openViewDocs[1].description, openViewDocs[1].link, openViewDocs[1].content, false) }}>
+                      <Button color="red" onClick={() => { setopenViewDocs([false, openViewDocs[1]]); decline(openViewDocs[1].cid, openViewDocs[1].title, openViewDocs[1].description, openViewDocs[1].link, openViewDocs[1].content, openViewDocs[1].timeStart, openViewDocs[1].timeEnd, false) }}>
                         Decline
                       </Button>
                     </div>
@@ -223,22 +166,19 @@ export default function News() {
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th className="px-6 py-3 text-center border font-semibold text-gray-600 uppercase tracking-wider">
-                      Club Logo
-                    </th>
-                    <th className="px-6 py-3 text-center border font-semibold text-gray-600 uppercase tracking-wider">
                       Club ID
                     </th>
                     <th className="px-6 py-3 text-center border font-semibold text-gray-600 uppercase tracking-wider">
                       Club Name
                     </th>
                     <th className="px-6 py-3 text-center border font-semibold text-gray-600 uppercase tracking-wider">
-                      Leader
+                      Timings
                     </th>
                     <th className="px-6 py-3 text-center border font-semibold text-gray-600 uppercase tracking-wider">
-                      Docs
+                      Link
                     </th>
                     <th className="px-6 py-3 text-center border font-semibold text-gray-600 uppercase tracking-wider">
-                      Status & Position
+                      Status
                     </th>
 
                   </tr>
@@ -248,28 +188,22 @@ export default function News() {
                     Data.length > 0 ? Data.map((e, i) => {
 
                       return (
-                        <tr key={i} className="">
-                          <td
-                            className="px-2 border"
-                          >
-                            <div className="flex justify-center" style={{ width: 150 }}>
-                              <img className="rounded" src={`http://localhost:5000/admin/clublogo/${e.logo}`}  />
-                            </div>
-                          </td>
+                        <tr key={i} className="cursor-pointer" onClick={ele => { setopenViewDocs([true, e]) }}>
                           <td className="px-6 text-center border py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
                             {e.cid}
                           </td>
                           <td className="px-6 text-center border py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
                             {e.name}
                           </td>
-                          <td className="px-6  text-centerpy-4 border whitespace-no-wrap text-sm leading-5 text-gray-500">
-                            {e.founder}
+                          <td className="px-6 text-center py-4 border whitespace-no-wrap text-sm leading-5 text-indigo-600 hover:text-indigo-900">
+                            <p className="font-bold text-gray-700"><span className="text-sm text-gray-500 font-bold mr-2 ml-2">Start<br /></span> {e.timeStart !== "" && e.timeStart !== undefined ? e.timeStart.split("T").map(e => e + "  ") : null}</p>
+                            <p className="font-bold text-gray-700"><span className="text-sm text-gray-500 font-bold mr-5 ml-2">End<br /></span>{e.timeEnd !== "" && e.timeEnd !== undefined ? e.timeEnd.split("T").map(e => e + "  ") : null}</p>
                           </td>
-                          <td onClick={ele => { setopenViewDocs([true, e]) }} className="px-6 cursor-pointer text-center py-4 border whitespace-no-wrap text-sm leading-5 text-indigo-600 hover:text-indigo-900">
-                            View Docs
+                          <td className="px-6 text-center py-4 border whitespace-no-wrap text-sm leading-5 text-indigo-600 hover:text-indigo-900">
+                            {e.link !== null && e.link !== "" ? e.link : "No link"}
                           </td>
                           <td className="px-6 text-center py-4 border text-sm leading-5 text-indigo-600">
-                            <h5>{e.approved ? `Approved | ${e.position == 0 ? "Removed" : e.position}` : "Not Approved"}  </h5>
+                            <h5>{e.approved ? `Approved` : "Not Approved"}  </h5>
                           </td>
                         </tr>
                       )
