@@ -14,7 +14,7 @@ export default function Events() {
   const [Success, setSuccess] = useState([false, ""])
 
   const load = async () => {
-    const send = await fetch("http://localhost:5000/admin/events_approval", {
+    const send = await fetch("https://psa-server.vercel.app/admin/events_approval", {
       method: "GET",
       mode: "cors",
     });
@@ -23,7 +23,7 @@ export default function Events() {
   };
 
   const accept = async (d) => {
-    const send = await fetch("http://localhost:5000/admin/approve_events", {
+    const send = await fetch("https://psa-server.vercel.app/admin/approve_events", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -43,7 +43,7 @@ export default function Events() {
   };
 
   const decline = async (cid, title, description, link, content, timeStart, timeEnd, removed) => {
-    const send = await fetch("http://localhost:5000/admin/decline_events", {
+    const send = await fetch("https://psa-server.vercel.app/admin/decline_events", {
       method: "POST",
       mode: "cors",
       headers: {

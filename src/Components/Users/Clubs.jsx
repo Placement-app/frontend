@@ -1,28 +1,52 @@
-import React, { useEffect, useState } from 'react'
-import { Card, Dropdown, TextInput, Rating, Kbd } from 'flowbite-react';
+import React, { useContext, useEffect, useState } from 'react'
+import { Card, Dropdown, TextInput, Rating, Modal, Alert } from 'flowbite-react';
 import { IoSearch } from "react-icons/io5";
 import { FaShareAlt } from "react-icons/fa";
+import { IoCloseSharp } from "react-icons/io5";
+import { UserContext } from '../../Context/UserContext';
 
 export default function Clubs() {
+    const { Clubs, User } = useContext(UserContext)
+    const [OpenModal, setOpenModal] = useState([false])
+    const [openAlert, setopenAlert] = useState({ open: false, data: null, color: "" })
 
-    const [Data, setData] = useState([])
+    const join = async (cid) => {
+        console.log(User._id);
+        if (User._id) {
+            const getUser = await fetch("https://psa-server.vercel.app/user/joinclub", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                mode: "cors",
+                body: JSON.stringify({ cid, userId: User._id }),
+            });
+            const { msg, update } = await getUser.json();
+            console.log(msg);
+            if (update) {
+                setopenAlert({ open: true, color: "success", data: msg })
+            } else {
+                setopenAlert({ open: true, color: "failure", data: msg })
+            }
+        } else {
+            setopenAlert({ open: true, color: "warning", data: "Login for joing on this club!" })
+        }
 
-    const load = async () => {
-        const send = await fetch("http://localhost:5000/user/clubs", {
-            method: "GET",
-            mode: "cors",
-        });
-        const { data } = await send.json();
-        console.log(data);
-        setData(data);
-    };
+    }
+    const findClub = async (cid, e) => {
+        const find = User.clubs.find(e => e.cid == cid)
+        console.log(find);
+        // Open, data, requested or not
+        setOpenModal([true, !!find ? { ...e, mystatus: find.status } : e, !!find])
 
+    }
     useEffect(() => {
         document.title = "Clubs | Place app"
-        load()
-    }, [])
+        console.log(OpenModal);
+    }, [OpenModal])
     return (
         <>
+
             <div className='text-center mt-8 font-bold text-2xl md:text-4xl'>
                 Learn and Teach on Interesting clubs
             </div>
@@ -58,37 +82,131 @@ export default function Clubs() {
                         Football</Dropdown.Item>
                 </Dropdown>
             </div>
+
+
+            <Modal show={OpenModal[0]} onClose={() => setOpenModal([false])}>
+                <Modal.Header>
+                    {OpenModal[0] ? OpenModal[1].name : null}
+                    <Rating>
+                        <Rating.Star />
+                        <p className="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">4.95 out of 5</p>
+                    </Rating>
+                </Modal.Header>
+                <Modal.Body>
+                    {
+                        openAlert.open ? <Alert color={openAlert.color} style={{ display: openAlert.open ? null : "none" }}>
+                            <h5>{openAlert.data}</h5>
+                        </Alert> :
+                            null
+                    }
+
+                    {
+                        OpenModal[0] ? <div className='overflow-y-scroll h-full remcroll'>
+                            {/* <div onClick={e => { console.log("me") }}>
+                                <FaShareAlt className='cursor-pointer' />
+                            </div> */}
+                            <div className="flex items-center justify-center w-full">
+                                <img
+                                    src={`https://psa-server.vercel.app/admin/clublogo/${OpenModal[1].logo}`}
+                                    className="mb-3 rounded"
+                                    style={{ height: 150 }}
+                                />
+                            </div>
+                            <div className='flex justify-between items-center'>
+
+                            </div>
+                            <h5 className="mt-2 text-xs text-gray-400">ABOUT</h5>
+                            <h5 className='text-sm'>{OpenModal[1].about}</h5>
+                            <div className="mt-2  flex items-center space-x-4">
+                                <div className='text-md text-white bg-black rounded px-2 py-1'>
+                                    {OpenModal[1].founder.slice(0, 2).toUpperCase()}
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                    <p className="truncate text-sm font-medium text-gray-900 dark:text-white">Founder</p>
+                                    <p className="truncate text-sm text-gray-500 dark:text-gray-400">{OpenModal[1].founder}</p>
+                                </div>
+                            </div>
+                            <h5 className="mt-2 text-xs text-gray-400">MEMBERS</h5>
+                            <div className='flex'>
+                                <div className='text-md mr-1 text-white bg-black rounded px-2 py-1'>
+                                    {OpenModal[1].founder.slice(0, 2).toUpperCase()}
+                                </div>
+                                <div className='text-md mr-1 text-white bg-black rounded px-2 py-1'>
+                                    {OpenModal[1].founder.slice(0, 2).toUpperCase()}
+                                </div>
+                                <div className='text-md mr-1 text-white bg-black rounded px-2 py-1'>
+                                    {OpenModal[1].founder.slice(0, 2).toUpperCase()}
+                                </div>
+                            </div>
+                            <h5 className="mt-4 text-xs text-gray-400">NEWS</h5>
+                            <ul className="mx-2 pb-2">
+                                {/* {
+                                    OpenModal[1].news.map((e, i) => {
+                                        return (
+                                            <li
+                                                key={i}
+                                                className="mt-2 mb-2 border p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg"
+                                                // onClick={e => { news.link !== "" && news.link !== undefined ? window.location.replace(news.link) : null }}
+                                            >
+                                                <div className="flex items-center">
+                                                    <div className="w-full">
+                                                        <h2 className="text-sm md:text-lg font-semibold">
+                                                            {"OpenModal[1].news.head"}
+                                                        </h2>
+                                                        <p className="text-xs md:text-sm text-gray-500 ">
+                                                            {'news.date !== null ? news.date.split("T")[0] : null'}
+                                                        </p>
+                                                        <p className="text-xs md:text-sm text-gray-700">
+                                                            {'news.description'}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        )
+                                    })
+                                } */}
+                            </ul>
+                            {
+                                OpenModal[2] ?
+                                    <button className='bg-yellow-300 text-white p-1 px-3 rounded text-sm'>{OpenModal[1].mystatus}</button>
+                                    : <button onClick={e => join(OpenModal[1].cid)} className='bg-black text-white p-1 px-3 rounded text-sm'>Join Club</button>
+                            }
+                        </div> : null
+                    }
+
+                </Modal.Body>
+            </Modal>
+
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 '>
                 {
-                    Data.map((e, i) => {
+                    Clubs.map((e, i) => {
                         return (
-                            <div key={i} className='flex justify-center'>
-                                <Card className="max-w-xs border-2 m-2">
+                            <div key={i} className='flex justify-center cursor-pointer'>
+                                <Card className="w-full border-2 m-2 mx-12 md:mx-2" onClick={ele => { findClub(e.cid, e) }}>
                                     <div className="flex justify-end px-4 pt-2">
                                         <FaShareAlt className='cursor-pointer' />
                                     </div>
                                     <div className="flex items-center justify-center w-full">
                                         <img
-                                            height="100"
-                                            src={`http://localhost:5000/admin/clublogo/${e.logo}`}
+                                            src={`https://psa-server.vercel.app/admin/clublogo/${e.logo}`}
                                             className="mb-3 rounded"
                                             style={{ height: 150 }}
                                         />
                                     </div>
                                     <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{e.name}</h5>
-                                    <div className='text-sm'>
+                                    <h5 className='text-sm'>
                                         {e.about}
-                                    </div>
+                                    </h5>
                                     <div >
                                         <Rating>
                                             <Rating.Star />
-                                            <p className="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">4.95 out of 5</p>
+                                            <p className="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">{i % 2 == 0 ? 3.95 - i / 2 : 3.95 + i / 2} out of 5</p>
                                         </Rating>
                                     </div>
                                     <div className="flex items-center space-x-4">
-                                            <div className='text-md text-white bg-black rounded px-2 py-1'>
-                                            {e.founder.slice(0,2).toUpperCase()}
-                                            </div>
+                                        <div className='text-md text-white bg-black rounded px-2 py-1'>
+                                            {e.founder.slice(0, 2).toUpperCase()}
+                                        </div>
                                         <div className="min-w-0 flex-1">
                                             <p className="truncate text-sm font-medium text-gray-900 dark:text-white">Founder</p>
                                             <p className="truncate text-sm text-gray-500 dark:text-gray-400">{e.founder}</p>

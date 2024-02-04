@@ -29,7 +29,7 @@ export default function RequestNews() {
     const navigate = useNavigate()
 
     const check = async () => {
-        const getUser = await fetch("http://localhost:5000/myclub/protected", {
+        const getUser = await fetch("https://psa-server.vercel.app/myclub/protected", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -59,7 +59,7 @@ export default function RequestNews() {
             setWarning([true, "Please fill all details!"])
             setSuccess([false, ""])
         } else {
-            const send = await fetch("http://localhost:5000/myclub/addnews", {
+            const send = await fetch("https://psa-server.vercel.app/myclub/addnews", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -98,7 +98,7 @@ export default function RequestNews() {
     const Requested = async (e) => {
         try {
 
-            const send = await fetch("http://localhost:5000/myclub/verify_news", {
+            const send = await fetch("https://psa-server.vercel.app/myclub/verify_news", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -121,7 +121,7 @@ export default function RequestNews() {
 
     }
     const Remove = async () => {
-        const send = await fetch("http://localhost:5000/myclub/remove_news", {
+        const send = await fetch("https://psa-server.vercel.app/myclub/remove_news", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

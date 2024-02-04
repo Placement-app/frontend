@@ -13,8 +13,9 @@ import ClubRoutes from "./Routes/ClubRoutes";
 
 export default function App() {
   const [Navi, setNavi] = useState(true);
+
   useEffect(() => {
-    if(location.pathname.search("myclub") != -1){
+    if (location.pathname.search("myclub") != -1) {
       setNavi("club")
     }
     else if (location.pathname.search("admin") != -1) {
@@ -26,7 +27,7 @@ export default function App() {
   }, [location]);
   return (
     <>
-      {Navi == "home" ? <Nav /> : Navi == "club"?<ClubAdminNav/>:<AdminNav/>}
+      {Navi == "home" ? <Nav /> : Navi == "club" ? <ClubAdminNav /> : <AdminNav />}
       <Routes>
         {UserRoutes()}
         {ClubRoutes()}

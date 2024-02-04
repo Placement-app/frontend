@@ -23,7 +23,7 @@ export default function RequestCarousel() {
   const navigate = useNavigate()
 
   const check = async () => {
-    const getUser = await fetch("http://localhost:5000/myclub/protected", {
+    const getUser = await fetch("https://psa-server.vercel.app/myclub/protected", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +53,7 @@ export default function RequestCarousel() {
       setImageLoader(true)
       const formData = new FormData();
       formData.append("carousel", e);
-      const send = await fetch("http://localhost:5000/myclub/uploadcarousel", {
+      const send = await fetch("https://psa-server.vercel.app/myclub/uploadcarousel", {
         method: "POST",
         mode: "cors",
         body: formData,
@@ -79,7 +79,7 @@ export default function RequestCarousel() {
       setWarning([true, "Please fill all details!"])
       setSuccess([false, ""])
     } else {
-      const send = await fetch("http://localhost:5000/myclub/addcarousel", {
+      const send = await fetch("https://psa-server.vercel.app/myclub/addcarousel", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -111,7 +111,7 @@ export default function RequestCarousel() {
     }
   };
   const Requested = async (e) => {
-    const send = await fetch("http://localhost:5000/myclub/verify_carousel", {
+    const send = await fetch("https://psa-server.vercel.app/myclub/verify_carousel", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -131,7 +131,7 @@ export default function RequestCarousel() {
 
   }
   const Remove = async () => {
-    const send = await fetch("http://localhost:5000/myclub/remove_carousel", {
+    const send = await fetch("https://psa-server.vercel.app/myclub/remove_carousel", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -194,7 +194,7 @@ export default function RequestCarousel() {
                   </p>
                 </Alert> : ""
               }
-              {AlreadyReq[1].approved == "Timeup" ?
+              {AlreadyReq[1].approved == "Time Up" ?
                 <Alert color="yellow" icon={HiInformationCircle} className="mx-4">
                   <p className="font-medium">
                     Ok! Well done but your carousel has been removed now <span onClick={Remove} className="underline cursor-pointer"> Try again</span>
@@ -209,7 +209,7 @@ export default function RequestCarousel() {
                 </Alert> : ""
               }
 
-              <img className="rounded md:w-2/3" src={AlreadyReq[1].img !== "" ? `http://localhost:5000/myclub/carousel/${AlreadyReq[1].img}` : "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJAAegMBIgACEQEDEQH/xAAWAAEBAQAAAAAAAAAAAAAAAAAAAQf/xAAVEAEBAAAAAAAAAAAAAAAAAAAAAf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8Aw4AAAUAEAAAAAUAAAAURRRBQCCKgJVAQUAAUABABFEUUEVAAEAAQVBQUEVFAABQBAAoIAIAAAAALAAAAFURQEFqCACAAAAACwAAAAUAUSgCACAAAAAsQBQAAFUAAABBQRAEABQUAABQAAAAAAAAAQAFAAAAAAAAAAAEABQAAAAAAAB//2Q=="} alt="" />
+              <img className="rounded md:w-2/3" src={AlreadyReq[1].img !== "" ? `https://psa-server.vercel.app/myclub/carousel/${AlreadyReq[1].img}` : "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJAAegMBIgACEQEDEQH/xAAWAAEBAQAAAAAAAAAAAAAAAAAAAQf/xAAVEAEBAAAAAAAAAAAAAAAAAAAAAf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8Aw4AAAUAEAAAAAUAAAAURRRBQCCKgJVAQUAAUABABFEUUEVAAEAAQVBQUEVFAABQBAAoIAIAAAAALAAAAFURQEFqCACAAAAACwAAAAUAUSgCACAAAAAsQBQAAFUAAABBQRAEABQUAABQAAAAAAAAAQAFAAAAAAAAAAAEABQAAAAAAAB//2Q=="} alt="" />
               <div className="bg-black p-2 px-4 rounded " style={{ width: "fit-content" }}>
                 <h2 className="text-white text-sm">
                   {AlreadyReq[1].approved}</h2>

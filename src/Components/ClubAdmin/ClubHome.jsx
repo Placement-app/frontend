@@ -6,8 +6,9 @@ import HomeGraph from './Home/HomeGraph';
 export default function ClubHome() {
   const navigate = useNavigate()
   const [cookie, setCookie] = useCookies(["CAAUAT"]);
+  
   const check = async () => {
-    const getUser = await fetch("http://localhost:5000/user/protected", {
+    const getUser = await fetch("https://psa-server.vercel.app/myclub/protected", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -16,8 +17,12 @@ export default function ClubHome() {
       body: JSON.stringify({ token: cookie.CAAUAT }),
     });
     const { msg } = await getUser.json();
+    console.log(msg);
     if (msg != "Access granted") {
-      navigate('/myclub/login')
+      if(msg == "Account deleted"){
+        setCookie(["CAAUAT",null])
+      }
+        navigate('/myclub/login')
     }
   }
   useEffect(() => {

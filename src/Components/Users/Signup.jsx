@@ -1,8 +1,9 @@
 import { Button, Checkbox, Label, TextInput, Alert } from "flowbite-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { HiInformationCircle } from "react-icons/hi";
-import { useCookies } from 'react-cookie'
+import { UserContext } from "../../Context/UserContext";
+
 export default function Signup() {
   const [Name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -10,7 +11,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [cpassword, setCPassword] = useState("");
   const [alert, setAlert] = useState([false, ""]);
-  const [cookie, setCookie] = useCookies(['PAUAT'])
+  const { setLoader, Loader, setCookie } = useContext(UserContext)
 
   const navigate = useNavigate();
   document.title = "Signup | Placement App";
@@ -24,7 +25,7 @@ export default function Signup() {
     } else {
       if (regex.test(password)) {
         if (password == cpassword) {
-          const send = await fetch("http://localhost:5000/user/signup", {
+          const send = await fetch("https://psa-server.vercel.app/user/signup", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -33,9 +34,9 @@ export default function Signup() {
             body: JSON.stringify({ name: Name, email, password, regno }),
           });
           const { msg } = await send.json();
-          console.log(msg);
           if (msg.token) {
             setCookie('PAUAT', msg.token)
+            setLoader(!Loader)
             navigate("/")
           } else {
             setAlert([true, "Something Went Wrong!"]);
@@ -55,7 +56,7 @@ export default function Signup() {
     }
   };
   return (
-    <div style={{ backgroundColor: "#070707",height:"130vh" }}>
+    <div style={{ backgroundColor: "#070707", height: "130vh" }}>
       <div className="flex justify-center pt-5 pb-5">
         {alert[0] ? (
           <Alert color="failure" icon={HiInformationCircle} className="mx-4">
@@ -67,7 +68,7 @@ export default function Signup() {
           </Alert>
         ) : null}
       </div>
-      <div  className="flex justify-center items-center mt-14 sm:mt-0">
+      <div className="flex justify-center items-center mt-14 sm:mt-0">
         <form>
           <div className="container flex max-w-sm flex-col gap-4 bg-black rounded-lg p-3 px-5">
             <h2 className="text-white text-center font-bold text-2xl mt-4">

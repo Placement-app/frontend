@@ -29,7 +29,7 @@ export default function ClubAdminNav() {
   };
 
   const check = async () => {
-    const getUser = await fetch("http://localhost:5000/myclub/protected", {
+    const getUser = await fetch("https://psa-server.vercel.app/myclub/protected", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -241,7 +241,7 @@ export default function ClubAdminNav() {
               </li>
               <li className="text-white p-2 rounded flex items-center">
                 <RiTeamFill className="mr-2" style={{ width: 22, height: 22 }} />
-                <Link to="/myclub" onClick={e => { setIsOpen(false) }}>Members</Link>
+                <Link to="/myclub/members" onClick={e => { setIsOpen(false) }}>Members</Link>
               </li>
               <li className="text-white p-2 rounded flex items-center">
                 <FiTrendingUp className="mr-2" style={{ width: 22, height: 22 }} />

@@ -1,32 +1,12 @@
 import { Dropdown, Navbar } from "flowbite-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useCookies } from "react-cookie";
+import { UserContext } from "../../Context/UserContext";
+
 export default function Nav() {
   const [shownav, setShownav] = useState(true);
   const location = useLocation();
-  const [cookie, setCookie] = useCookies(["PAUAT"]);
-  const [Name, setName] = useState(["", ""])
-  const [email, setEmail] = useState("")
-  const [loader, setLoader] = useState(true)
-  const check = async () => {
-    const getUser = await fetch("http://localhost:5000/user/protected", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      mode: "cors",
-      body: JSON.stringify({ token: cookie.PAUAT }),
-    });
-    const { msg, name, email } = await getUser.json();
-
-    if (msg == "Access granted") {
-      setName([name.slice(0, 2), name])
-      setEmail(email)
-    }
-    setLoader(false)
-
-  };
+  const { Name, User, setCookie, cookie } = useContext(UserContext)
 
   const signOut = async () => {
     const logout = setCookie('PAUAT', null)
@@ -38,20 +18,18 @@ export default function Nav() {
     } else {
       setShownav(true);
     }
-
-    check();
-
   }, [location]);
+
   if (shownav) {
     return (
       <>
-
-        <div className="w-full fixed z-10" style={{ display: loader ? "none" : null }}>
+        {/* <div className="w-full fixed z-10" style={{ display: loader ? "none" : null }}> */}
+        <div className="w-full fixed z-10">
           <Navbar fluid className="bg-black">
-            <Navbar.Brand href="https://flowbite-react.com">
-              <span className="self-center whitespace-nowrap text-2xl font-semibold text-white">
-                PLACE APP
-              </span>
+            <Navbar.Brand>
+              <Link to="/" className="self-center whitespace-nowrap text-2xl font-semibold text-white">
+                SRM Techy
+              </Link>
             </Navbar.Brand>
             {cookie.PAUAT ? (
               <div className="flex md:order-2 shadow-lg">
@@ -61,20 +39,22 @@ export default function Nav() {
                   className="bg-black border-2 mt-2"
                   label={
                     <div className="w-10 h-10 mx-1 bg-white rounded-lg flex justify-center items-center">
-                      <h1 className="text-md font-bold">{Name[0].toUpperCase()}</h1>
+                      <h1 className="text-md font-bold">{Name.toUpperCase()}</h1>
                     </div>
                   }
                 >
                   <Dropdown.Header className="border-none">
-                    <span className="block text-md text-white">{Name[1]}</span>
+                    <span className="block text-md text-white">
+                      {User.name}
+                    </span>
                     <span className="block truncate text-sm font-medium text-white">
-                      {email}
+                      {User.email}
                     </span>
                   </Dropdown.Header>
-                  <Dropdown.Item className="text-white hover:text-black">Dashboard</Dropdown.Item>
-                  <Dropdown.Item className="text-white hover:text-black">Settings</Dropdown.Item>
-                  <Dropdown.Item className="text-white hover:text-black">My Cubs</Dropdown.Item>
-                  <Dropdown.Item className="text-white hover:text-black" onClick={signOut}>Sign out</Dropdown.Item>
+                  <Dropdown.Item>Dashboard</Dropdown.Item>
+                  <Dropdown.Item><Link to="/profile">Profile</Link></Dropdown.Item>
+                  <Dropdown.Item>My Cubs</Dropdown.Item>
+                  <Dropdown.Item onClick={signOut}>Sign out</Dropdown.Item>
                 </Dropdown>
                 <Navbar.Toggle />
               </div>
@@ -123,7 +103,7 @@ export default function Nav() {
               </Navbar.Collapse>
             )}
           </Navbar></div>
-          <div className="pt-12"></div>
+        <div className="pt-12"></div>
       </>
     );
   } else {

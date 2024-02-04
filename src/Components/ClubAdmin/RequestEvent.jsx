@@ -31,7 +31,7 @@ export default function RequestEvent() {
     const navigate = useNavigate()
 
     const check = async () => {
-        const getUser = await fetch("http://localhost:5000/myclub/protected", {
+        const getUser = await fetch("https://psa-server.vercel.app/myclub/protected", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export default function RequestEvent() {
             setWarning([true, "Please fill all details!"])
             setSuccess([false, ""])
         } else {
-            const send = await fetch("http://localhost:5000/myclub/addevent", {
+            const send = await fetch("https://psa-server.vercel.app/myclub/addevent", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -100,7 +100,7 @@ export default function RequestEvent() {
     const Requested = async (e) => {
         try {
 
-            const send = await fetch("http://localhost:5000/myclub/verify_event", {
+            const send = await fetch("https://psa-server.vercel.app/myclub/verify_event", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -124,7 +124,7 @@ export default function RequestEvent() {
 
     }
     const Remove = async () => {
-        const send = await fetch("http://localhost:5000/myclub/remove_event", {
+        const send = await fetch("https://psa-server.vercel.app/myclub/remove_event", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

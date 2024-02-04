@@ -16,7 +16,7 @@ export default function AdminHome() {
   const navigate = useNavigate()
   const [cookie, setCookie] = useCookies(["AAUAT"]);
   const check = async () => {
-    const getUser = await fetch("http://localhost:5000/user/protected", {
+    const getUser = await fetch("https://psa-server.vercel.app/user/protected", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -25,8 +25,8 @@ export default function AdminHome() {
       body: JSON.stringify({ token: cookie.AAUAT }),
     });
     const { msg } = await getUser.json();
-    if (msg != "Access granted") {
-      navigate('/admin/login')
+    if (msg == "Access granted") {
+      navigate('/admin')
     }
   }
   useEffect(() => {

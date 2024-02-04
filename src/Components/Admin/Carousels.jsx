@@ -2,7 +2,6 @@ import { Alert, Button, Dropdown, Modal } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { CiCircleCheck } from "react-icons/ci";
 import { HiInformationCircle } from "react-icons/hi";
-import { Link } from "react-router-dom";
 import { TbReplace } from "react-icons/tb";
 import { VscInsert } from "react-icons/vsc";
 
@@ -14,7 +13,7 @@ export default function Carousel() {
   const [Success, setSuccess] = useState([false, ""])
   const [opt, setopt] = useState(0)
   const load = async () => {
-    const send = await fetch("http://localhost:5000/admin/carousel_approval", {
+    const send = await fetch("https://psa-server.vercel.app/admin/carousel_approval", {
       method: "GET",
       mode: "cors",
     });
@@ -23,7 +22,7 @@ export default function Carousel() {
   };
 
   const accept = async (d) => {
-    const send = await fetch("http://localhost:5000/admin/approve_carousel", {
+    const send = await fetch("https://psa-server.vercel.app/admin/approve_carousel", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -32,26 +31,32 @@ export default function Carousel() {
       body: JSON.stringify({ cid: d.cid, img: d.img, content: d.content, position: opt })
     });
     const res = await send.json();
+    console.log(res);
     if (res.approved == false) {
-      setWarning([true, res.msg])
-      setSuccess([false, ""])
+      if (res.change) {
+        setopenPopup(true)
+      } else {
+        setWarning([true, res.msg])
+        setSuccess([false, ""])
+      }
     } else {
       setSuccess([true, res.msg])
       setWarning([false, ""])
+      setopenViewDocs([false, openViewDocs[1]]);
       load()
     }
   };
-  const decline = async (cid, img, content) => {
-    const send = await fetch("http://localhost:5000/admin/decline_carousel", {
+  const decline = async (cid, remove) => {
+    const send = await fetch("https://psa-server.vercel.app/admin/decline_carousel", {
       method: "POST",
       mode: "cors",
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ cid, img, content })
+      body: JSON.stringify({ cid, remove })
     });
     const res = await send.json();
-    if (res.denied) {
+    if (res.updated) {
       setSuccess([true, res.msg])
       setWarning([false, ""])
       load()
@@ -61,36 +66,15 @@ export default function Carousel() {
     }
   };
 
-  const remove = async (cid, img, content) => {
-    const req = await fetch('http://localhost:5000/admin/remove_carousel', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      mode: "cors",
-      body: JSON.stringify({ cid, img, content })
-    })
-    const res = await req.json()
-    if (res.removed) {
-      setSuccess([true, res.msg])
-      setWarning([false, ""])
-      load()
-
-    } else {
-      setWarning([true, res.msg])
-      setSuccess([false, ""])
-    }
-  }
-
-  const change = async (option, proceed, position) => {
+  const change = async (option, proceed) => {
     try {
-      const req = await fetch('http://localhost:5000/admin/change_carousel', {
+      const req = await fetch('https://psa-server.vercel.app/admin/change_carousel', {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         mode: "cors",
-        body: JSON.stringify({ cid: openViewDocs[1].cid, position: position ? position : openViewDocs[1].position, option, proceed })
+        body: JSON.stringify({ cid: openViewDocs[1].cid, position: opt, option, proceed })
 
       })
       const res = await req.json()
@@ -159,7 +143,7 @@ export default function Carousel() {
                   {
                     openViewDocs[0] ? <div>
                       {
-                        openViewDocs[0] ? <img src={`http://localhost:5000/myclub/carousel/${openViewDocs[1].img}`} width={"100%"} alt="" /> : ""
+                        openViewDocs[0] ? <img src={`https://psa-server.vercel.app/myclub/carousel/${openViewDocs[1].img}`} width={"100%"} alt="" /> : ""
                       }
                       <p className="text-base leading-relaxed text-gray-800 text-justify mt-10">
                         {openViewDocs[1].content}
@@ -185,7 +169,7 @@ export default function Carousel() {
                         <option className="text-white" value="4">4</option>
                         <option className="text-white" value="5">5</option>
                       </select>
-                      <Button color="red" onClick={() => { setopenViewDocs([false, openViewDocs[1]]); remove(openViewDocs[1].cid, openViewDocs[1].img, openViewDocs[1].content) }}>
+                      <Button color="red" onClick={() => { setopenViewDocs([false, openViewDocs[1]]); decline(openViewDocs[1].cid,true) }}>
                         Remove
                       </Button>
                       <Modal show={openPopup} className="py-36" onClose={() => setopenPopup(false)}>
@@ -210,7 +194,7 @@ export default function Carousel() {
                     </div>
                     :
                     <div className="flex">
-                      <Button className="bg-black mr-2" onClick={() => { setopenViewDocs([false, openViewDocs[1]]); accept(openViewDocs[1]) }}>Approve</Button>
+                      <Button className="bg-black mr-2" onClick={() => { accept(openViewDocs[1]) }}>Approve</Button>
                       <select name="Position" className="rounded-md bg-black text-white mr-2" onChange={e => setopt(e.target.value)} value={opt}>
                         <option className="text-white" value="0">Out</option>
                         <option className="text-white" value="1">1</option>
@@ -219,9 +203,28 @@ export default function Carousel() {
                         <option className="text-white" value="4">4</option>
                         <option className="text-white" value="5">5</option>
                       </select>
-                      <Button color="red" onClick={() => { setopenViewDocs([false, openViewDocs[1]]); decline(openViewDocs[1].cid, openViewDocs[1].img, openViewDocs[1].content) }}>
+                      <Button color="red" onClick={() => { setopenViewDocs([false, openViewDocs[1]]); decline(openViewDocs[1].cid,false) }}>
                         Decline
                       </Button>
+                      <Modal show={openPopup} className="py-36" onClose={() => setopenPopup(false)}>
+                        <Modal.Header>Choose your option</Modal.Header>
+                        <Modal.Body>
+                          <h5 className="mx-1 mb-5">A carousel is present already over there so you can choose any one of these option</h5>
+                          <div className="flex">
+                            <Alert color="warning" icon={HiInformationCircle} className="mx-1 w-full">
+                              To insert the carousel in between the position use replace option if any old carosel at that position it will move one step back.
+                            </Alert>
+                            <Alert color="warning" icon={HiInformationCircle} className="mx-1 w-full">
+                              To replace with old carousel use replace option and position of old carousel will be out.
+                            </Alert>
+                          </div>
+                          <div className="mt-4 mx-1 flex">
+                            <button onClick={e => { change(1, true) }} className="text-white bg-black rounded px-3 py-1 mx-1 cursor-pointer flex justify-center items-center text-sm"><VscInsert className="mr-2" color="white" style={{ height: 20, width: 20 }} /> Insert</button>
+                            <button onClick={e => { change(0, true) }} className="text-white bg-black rounded px-3 py-1 mx-1 cursor-pointer flex justify-center items-center text-sm"><TbReplace className="mr-2" color="white" style={{ height: 20, width: 20 }} /> Replace</button>
+                          </div>
+
+                        </Modal.Body>
+                      </Modal>
                     </div>
 
                 }
@@ -234,16 +237,10 @@ export default function Carousel() {
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th className="px-6 py-3 text-center border font-semibold text-gray-600 uppercase tracking-wider">
-                      Club Logo
-                    </th>
-                    <th className="px-6 py-3 text-center border font-semibold text-gray-600 uppercase tracking-wider">
                       Club ID
                     </th>
                     <th className="px-6 py-3 text-center border font-semibold text-gray-600 uppercase tracking-wider">
                       Club Name
-                    </th>
-                    <th className="px-6 py-3 text-center border font-semibold text-gray-600 uppercase tracking-wider">
-                      Leader
                     </th>
                     <th className="px-6 py-3 text-center border font-semibold text-gray-600 uppercase tracking-wider">
                       Docs
@@ -259,24 +256,14 @@ export default function Carousel() {
                     Data.length > 0 ? Data.map((e, i) => {
 
                       return (
-                        <tr key={i}>
-                          <td
-                            className="px-2 border"
-                          >
-                            <div className="flex justify-center" style={{width:150}}>
-                              <img className="rounded" src={`http://localhost:5000/admin/clublogo/${e.logo}`} />
-                            </div>
-                          </td>
+                        <tr key={i} onClick={ele => { setopenViewDocs([true, e]) }} className="cursor-pointer">
                           <td className="px-6 text-center border py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
                             {e.cid}
                           </td>
                           <td className="px-6 text-center border py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
                             {e.name}
                           </td>
-                          <td className="px-6  text-centerpy-4 border whitespace-no-wrap text-sm leading-5 text-gray-500">
-                            {e.founder}
-                          </td>
-                          <td onClick={ele => { setopenViewDocs([true, e]) }} className="px-6 cursor-pointer text-center py-4 border whitespace-no-wrap text-sm leading-5 text-indigo-600 hover:text-indigo-900">
+                          <td className="px-6 cursor-pointer text-center py-4 border whitespace-no-wrap text-sm leading-5 text-indigo-600 hover:text-indigo-900">
                             View Docs
                           </td>
                           <td className="px-6 text-center py-4 border text-sm leading-5 text-indigo-600">
