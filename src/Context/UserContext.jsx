@@ -14,7 +14,7 @@ const UserProvider = ({ children }) => {
     const [UserData, setUserData] = useState({})
     const [Clubs, setClubs] = useState([])
     const getData = async () => {
-        const req = await fetch('https://psa-server.vercel.app/user/all', {
+        const req = await fetch('http://192.168.1.35:5000/user/all', {
             method: "GET",
             mode: "cors",
         })
@@ -26,7 +26,7 @@ const UserProvider = ({ children }) => {
     }
 
     const check = async () => {
-        const getUser = await fetch("https://psa-server.vercel.app/user/protected", {
+        const getUser = await fetch("http://192.168.1.35:5000/user/protected", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

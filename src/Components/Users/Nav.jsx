@@ -7,7 +7,7 @@ export default function Nav() {
   const [shownav, setShownav] = useState(true);
   const location = useLocation();
   const { Name, User, setCookie, cookie } = useContext(UserContext)
-
+  const [bg, setbg] = useState("transparent")
   const signOut = async () => {
     const logout = setCookie('PAUAT', null)
   }
@@ -20,12 +20,35 @@ export default function Nav() {
     }
   }, [location]);
 
+
+  const width = () => {
+    window.innerWidth < 768 ? setbg("black") : setbg("transparent")
+
+  }
+  const scroll = () => {
+    window.innerWidth > 768 ? window.scrollY < 300 ? setbg("transparent") : setbg("black") : null
+  }
+  window.addEventListener('resize', e => {
+    width()
+  })
+  window.addEventListener('scroll', e => {
+    scroll()
+  })
+  useEffect(() => {
+
+    scroll()
+    width()
+
+  }, [])
+
+
+
   if (shownav) {
     return (
       <>
         {/* <div className="w-full fixed z-10" style={{ display: loader ? "none" : null }}> */}
         <div className="w-full fixed z-10">
-          <Navbar fluid className="bg-black">
+          <Navbar fluid className="bg-black" style={{ backgroundColor: bg, transition: "1s ease" }}>
             <Navbar.Brand>
               <Link to="/" className="self-center whitespace-nowrap text-2xl font-semibold text-white">
                 SRM Techy
@@ -78,7 +101,7 @@ export default function Nav() {
                 </Link>
               </Navbar.Collapse>
             ) : (
-              <Navbar.Collapse>
+              <Navbar.Collapse >
                 <Link to="/" className={"text-white border-0 text-center mt-8 p-1 mb-4 md:mt-0 md:mb-0"}>
                   Home
                 </Link>
@@ -103,7 +126,8 @@ export default function Nav() {
               </Navbar.Collapse>
             )}
           </Navbar></div>
-        <div className="pt-12"></div>
+        {/* {bg == "black" ? <div className="pt-12"></div> : null} */}
+        
       </>
     );
   } else {

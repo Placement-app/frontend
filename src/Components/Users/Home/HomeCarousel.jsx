@@ -28,7 +28,7 @@
 
 //     Carousels.length > 0 ?
 //         <div
-//           style={{ width:"100vw",height:"50vh",backgroundImage: `url(https://psa-server.vercel.app/myclub/carousel/${Carousels[currentIndex].img})` }}
+//           style={{ width:"100vw",height:"50vh",backgroundImage: `url(http://192.168.1.35:5000/myclub/carousel/${Carousels[currentIndex].img})` }}
 //           className='rounded shadow-md bg-center bg-cover duration-500'
 //         >
 //         <div className='flex top-4 justify-center py-2'>
@@ -70,7 +70,7 @@ export default function HomeCarousel() {
       {Carousels.length > 0 ?
         Carousels.map((e, i) => {
           return (
-            <img key={i} src={`https://psa-server.vercel.app/myclub/carousel/${e.img}`} alt="" />
+            <img key={i} src={`http://192.168.1.35:5000/myclub/carousel/${e.img}`} alt="" />
           )
         })
         : <div></div>}

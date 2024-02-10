@@ -7,10 +7,11 @@ export default function Members() {
   const [Data, setData] = useState([])
   const navigate = useNavigate()
   const [cookie, setCookie] = useCookies(["CAAUAT"]);
-  const [sideView, setsideView] = useState({ name: "", email: "", regno: "" })
+  const [sideView, setsideView] = useState({ name: "", email: "", regno: "", open: false })
   const [Notifi, setNotifi] = useState({ msg: "", open: false, color: "success" })
+
   const all = async () => {
-    const send = await fetch("https://psa-server.vercel.app/myclub/members", {
+    const send = await fetch("http://192.168.1.35:5000/myclub/members", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,12 +22,13 @@ export default function Members() {
       }),
     });
     const { data } = await send.json()
-    setData(data)
-    ChangeSideView(data[0].userId)
+    if (data) {
+      setData(data)
+    }
   }
 
-  const ChangeSideView = async (userId) => {
-    const send = await fetch("https://psa-server.vercel.app/myclub/user", {
+  const ChangeSideView = async (userId, inClubStatus, open) => {
+    const send = await fetch("http://192.168.1.35:5000/myclub/user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,11 +39,11 @@ export default function Members() {
       }),
     });
     const { data } = await send.json()
-    setsideView(data)
+    setsideView({ ...data, inClubStatus, open })
   }
 
   const check = async () => {
-    const getUser = await fetch("https://psa-server.vercel.app/myclub/protected", {
+    const getUser = await fetch("http://192.168.1.35:5000/myclub/protected", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -59,7 +61,7 @@ export default function Members() {
   };
 
   const add = async (userId) => {
-    const send = await fetch("https://psa-server.vercel.app/myclub/add", {
+    const send = await fetch("http://192.168.1.35:5000/myclub/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -77,8 +79,10 @@ export default function Members() {
   useEffect(() => {
     check()
     all()
-    console.log(Notifi);
   }, [Cid])
+  useEffect(() => {
+    console.log(sideView.open)
+  }, [sideView.open])
 
   return (
     <div className='pt-16 flex'>
@@ -87,7 +91,7 @@ export default function Members() {
           <h2>{Notifi.msg}</h2>
         </Alert>
       </div>
-      <div className="w-full">
+      <div className="w-full mx-3">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -104,7 +108,7 @@ export default function Members() {
             {
               Data ? Data.map((e, i) => {
                 return (
-                  <tr key={i} className="cursor-pointer" onClick={ele => { ChangeSideView(e.userId) }}>
+                  <tr key={i} className="cursor-pointer" onClick={ele => { ChangeSideView(e.userId, e.status, true) }}>
                     <td className="px-6 text-center border py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
                       {e.userId}
                     </td>
@@ -120,28 +124,44 @@ export default function Members() {
           </tbody>
         </table>
       </div>
-      <div className=' w-full max-w-1/2 mx-6 shadow-md rounded border p-4'>
-        <p className='text-gray-500 text-xs'>User Name</p>
-        <p>{sideView.name}</p>
-        <p className='mt-2 text-gray-500 text-xs'>Email</p>
-        <p>{sideView.email}</p>
-        <p className='mt-2 text-gray-500 text-xs'>Register Number</p>
-        <p>{sideView.regno}</p>
-        <p className='mt-2 text-gray-500 text-xs'>Roll</p>
-        <p>Web Developer</p>
-        {
-          sideView.status == "Requested" ?
-            <div>
-              <button className='bg-black text-white rounded px-4 py-1 mt-4' onClick={e => add(sideView._id)}>Add</button>
-              <button className='bg-red-600 text-white rounded px-4 py-1 mt-4 ml-2'>Remove</button>
-            </div>
-            : <div>
-              <button className='bg-red-600 text-white rounded px-4 py-1 mt-4'>Remove</button>
-              <button className='bg-yellow-400 text-white rounded px-4 py-1 mt-4  ml-2' onClick={e => add(sideView._id)}>Block</button>
-            </div>
-        }
+      <div className=' w-full max-w-1/2'>
+      </div>
+      <div className='fixed flex justify-end w-full ' style={{zIndex:-1}}>
+        <div className='mx-3 shadow-md rounded border p-4'>
+          {
+            sideView.open ? <>
+              <p className='text-gray-500 text-xs'>User Name</p>
+              <p>{sideView.name}</p>
+              <p className='mt-2 text-gray-500 text-xs'>Email</p>
+              <p>{sideView.email}</p>
+              <p className='mt-2 text-gray-500 text-xs'>Register Number</p>
+              <p>{sideView.regno}</p>
+              <p className='mt-2 text-gray-500 text-xs'>Roll</p>
+              <p>Web Developer</p>
+
+              {
+
+                sideView.inClubStatus == "Requested" ?
+                  <div>
+                    <button className='bg-black text-white rounded px-4 py-1 mt-4' onClick={e => add(sideView._id)}>Add</button>
+                    <button className='bg-red-600 text-white rounded px-4 py-1 mt-4 ml-2'>Remove</button>
+                  </div>
+                  : <div>
+                    <button className='bg-red-600 text-white rounded px-4 py-1 mt-4'>Remove</button>
+                    <button className='bg-yellow-400 text-white rounded px-4 py-1 mt-4  ml-2' onClick={e => add(sideView._id)}>Block</button>
+                  </div>
+              }
+            </>
+              :
+              <div className='flex justify-center items-center h-full'>
+                <p className='text-gray-500 text-sm text-center w-full'>Click on any record to display</p>
+              </div>
+          }
 
 
+
+
+        </div>
       </div>
 
     </div>

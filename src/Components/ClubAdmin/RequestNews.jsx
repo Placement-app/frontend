@@ -29,7 +29,7 @@ export default function RequestNews() {
     const navigate = useNavigate()
 
     const check = async () => {
-        const getUser = await fetch("https://psa-server.vercel.app/myclub/protected", {
+        const getUser = await fetch("http://192.168.1.35:5000/myclub/protected", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -59,7 +59,7 @@ export default function RequestNews() {
             setWarning([true, "Please fill all details!"])
             setSuccess([false, ""])
         } else {
-            const send = await fetch("https://psa-server.vercel.app/myclub/addnews", {
+            const send = await fetch("http://192.168.1.35:5000/myclub/addnews", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -77,7 +77,6 @@ export default function RequestNews() {
                 }),
             });
             const res = await send.json();
-            console.log(res);
             if (res.created) {
                 setWarning([false, ""])
                 setSuccess([true, res.msg])
@@ -98,7 +97,7 @@ export default function RequestNews() {
     const Requested = async (e) => {
         try {
 
-            const send = await fetch("https://psa-server.vercel.app/myclub/verify_news", {
+            const send = await fetch("http://192.168.1.35:5000/myclub/verify_news", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -121,7 +120,7 @@ export default function RequestNews() {
 
     }
     const Remove = async () => {
-        const send = await fetch("https://psa-server.vercel.app/myclub/remove_news", {
+        const send = await fetch("http://192.168.1.35:5000/myclub/remove_news", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -136,9 +135,12 @@ export default function RequestNews() {
             setWarning([false, ""])
             setSuccess([true, res.msg])
             setAlreadyReq([false, {
-                img: "",
+                head: "",
+                description: "",
+                link: "",
                 content: "",
-                approval: ""
+                approval: "",
+                date:""
             }])
             Requested()
         } else {

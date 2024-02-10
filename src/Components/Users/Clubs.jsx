@@ -11,9 +11,8 @@ export default function Clubs() {
     const [openAlert, setopenAlert] = useState({ open: false, data: null, color: "" })
 
     const join = async (cid) => {
-        console.log(User._id);
         if (User._id) {
-            const getUser = await fetch("https://psa-server.vercel.app/user/joinclub", {
+            const getUser = await fetch("http://192.168.1.35:5000/user/joinclub", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -34,7 +33,7 @@ export default function Clubs() {
 
     }
     const findClub = async (cid, e) => {
-        const find = User.clubs.find(e => e.cid == cid)
+        const find = User.clubs?User.clubs.find(e => e.cid == cid):false
         console.log(find);
         // Open, data, requested or not
         setOpenModal([true, !!find ? { ...e, mystatus: find.status } : e, !!find])
@@ -107,7 +106,7 @@ export default function Clubs() {
                             </div> */}
                             <div className="flex items-center justify-center w-full">
                                 <img
-                                    src={`https://psa-server.vercel.app/admin/clublogo/${OpenModal[1].logo}`}
+                                    src={`http://192.168.1.35:5000/admin/clublogo/${OpenModal[1].logo}`}
                                     className="mb-3 rounded"
                                     style={{ height: 150 }}
                                 />
@@ -188,7 +187,7 @@ export default function Clubs() {
                                     </div>
                                     <div className="flex items-center justify-center w-full">
                                         <img
-                                            src={`https://psa-server.vercel.app/admin/clublogo/${e.logo}`}
+                                            src={`http://192.168.1.35:5000/admin/clublogo/${e.logo}`}
                                             className="mb-3 rounded"
                                             style={{ height: 150 }}
                                         />

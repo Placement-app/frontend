@@ -19,7 +19,7 @@ export default function Login() {
       setAlert([true, "Please fill all the fields"]);
     } else {
       if (regex.test(password)) {
-        const send = await fetch("https://psa-server.vercel.app/user/login", {
+        const send = await fetch("http://192.168.1.35:5000/user/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

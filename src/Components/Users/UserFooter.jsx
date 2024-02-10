@@ -13,14 +13,12 @@ export default function UserFooter() {
   }, [])
 
   return (
-    <Footer container className='bg-black text-white' style={{ borderRadius: 0,display:showFooter?null:"none" }}>
+    <Footer container className='bg-black text-white' style={{ borderRadius: 0, display: showFooter ? null : "none" }}>
       <div className="w-full">
         <div className="grid w-full justify-between sm:flex sm:justify-between md:flex md:grid-cols-1">
-          <div>
-            <h5 className='font-bold text-2xl m-4 text-center'>
-              Placement cell
-            </h5>
-          </div>
+          <h5 className='font-bold text-2xl mb-2'>
+            SRM Techy
+          </h5>
           <div className="grid grid-cols-2 gap-8 sm:mt-4 sm:grid-cols-3 sm:gap-6">
             <div>
               <Footer.Title title="about" />

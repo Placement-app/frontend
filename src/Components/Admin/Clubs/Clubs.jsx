@@ -30,7 +30,7 @@ export default function Clubs() {
   })
 
   const AllData = async () => {
-    const send = await fetch("https://psa-server.vercel.app/admin/clubs", {
+    const send = await fetch("http://192.168.1.35:5000/admin/clubs", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export default function Clubs() {
   };
 
   const Disable = async (cid, blocked) => {
-    const send = await fetch("https://psa-server.vercel.app/admin/disable_club", {
+    const send = await fetch("http://192.168.1.35:5000/admin/disable_club", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -67,7 +67,7 @@ export default function Clubs() {
     }
   }
   const Activate = async (cid) => {
-    const send = await fetch("https://psa-server.vercel.app/admin/activate_club", {
+    const send = await fetch("http://192.168.1.35:5000/admin/activate_club", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -121,7 +121,7 @@ export default function Clubs() {
 
           <div className="flex w-full">
             <div style={{ width:200}}>
-              <img className="rounded" src={`https://psa-server.vercel.app/admin/clublogo/${data.logo}`} />
+              <img className="rounded" src={`http://192.168.1.35:5000/admin/clublogo/${data.logo}`} />
             </div>
             <div className="ml-2">
               <h5 className="text-sm text-gray-500 font-bold">Founder</h5>
@@ -137,7 +137,7 @@ export default function Clubs() {
           <h5 className="text-sm text-gray-500 font-bold mt-4">Verified Documents</h5>
           <div className="flex justify-center w-full">
             <Tooltip content="click to view in large size" >
-              <img className="rounded" src={`https://psa-server.vercel.app/admin/clubverificationdocs/${data.docs}`} width={250} />
+              <img className="rounded" src={`http://192.168.1.35:5000/admin/clubverificationdocs/${data.docs}`} width={250} />
             </Tooltip>
           </div>
 
@@ -152,7 +152,7 @@ export default function Clubs() {
                 <h5 className="text-xs text-white bg-black max-w-fit px-3 py-1">{data.carousel.approved}</h5>
               </div>
               <div className="flex justify-center">
-                <img className="rounded" src={`https://psa-server.vercel.app/myclub/carousel/${data.carousel.img}`} style={{ height: 200 }} />
+                <img className="rounded" src={`http://192.168.1.35:5000/myclub/carousel/${data.carousel.img}`} style={{ height: 200 }} />
               </div>
               <h5 className="text-sm text-gray-500 font-bold mt-4 mx-4">Carousel Proposal</h5>
               <h5 className="text-sm text-justify mx-4">{data.carousel.content}</h5>
@@ -295,7 +295,7 @@ export default function Clubs() {
                           className="border px-2"
                         >
                           <div className="flex justify-center" style={{ width: 150 }} >
-                            <img className="rounded" src={`https://psa-server.vercel.app/admin/clublogo/${e.logo}`} />
+                            <img className="rounded" src={`http://192.168.1.35:5000/admin/clublogo/${e.logo}`} />
                           </div>
                         </td>
                         <td className="text-center border px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">

@@ -15,7 +15,7 @@ export default function News() {
   const [opt, setopt] = useState(0)
 
   const load = async () => {
-    const send = await fetch("https://psa-server.vercel.app/admin/news_approval", {
+    const send = await fetch("http://192.168.1.35:5000/admin/news_approval", {
       method: "GET",
       mode: "cors",
     });
@@ -24,7 +24,7 @@ export default function News() {
   };
 
   const accept = async (d) => {
-    const send = await fetch("https://psa-server.vercel.app/admin/approve_news", {
+    const send = await fetch("http://192.168.1.35:5000/admin/approve_news", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -49,7 +49,7 @@ export default function News() {
   };
 
   const decline = async (cid, removed) => {
-    const send = await fetch("https://psa-server.vercel.app/admin/decline_news", {
+    const send = await fetch("http://192.168.1.35:5000/admin/decline_news", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -70,7 +70,7 @@ export default function News() {
 
   const change = async (option, proceed) => {
     try {
-      const req = await fetch('https://psa-server.vercel.app/admin/change_news', {
+      const req = await fetch('http://192.168.1.35:5000/admin/change_news', {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -29,7 +29,7 @@ export default function ClubAdminNav() {
   };
 
   const check = async () => {
-    const getUser = await fetch("https://psa-server.vercel.app/myclub/protected", {
+    const getUser = await fetch("http://192.168.1.35:5000/myclub/protected", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

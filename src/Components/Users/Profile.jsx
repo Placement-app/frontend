@@ -29,7 +29,7 @@ export default function Profile() {
           <div className="flex items-center justify-center w-full">
             {/* <img
                                             height="100"
-                                            src={`https://psa-server.vercel.app/admin/clublogo/${e.logo}`}
+                                            src={`http://192.168.1.35:5000/admin/clublogo/${e.logo}`}
                                             className="mb-3 rounded"
                                             style={{ height: 150 }}
                                         /> */}
@@ -57,7 +57,7 @@ export default function Profile() {
           <div className="flex items-center justify-center w-full">
             {/* <img
                                             height="100"
-                                            src={`https://psa-server.vercel.app/admin/clublogo/${e.logo}`}
+                                            src={`http://192.168.1.35:5000/admin/clublogo/${e.logo}`}
                                             className="mb-3 rounded"
                                             style={{ height: 150 }}
                                         /> */}
@@ -85,7 +85,7 @@ export default function Profile() {
           <div className="flex items-center justify-center w-full">
             {/* <img
                                             height="100"
-                                            src={`https://psa-server.vercel.app/admin/clublogo/${e.logo}`}
+                                            src={`http://192.168.1.35:5000/admin/clublogo/${e.logo}`}
                                             className="mb-3 rounded"
                                             style={{ height: 150 }}
                                         /> */}
